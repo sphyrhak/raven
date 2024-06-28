@@ -2,6 +2,7 @@ package com.raven.main;
 
 import com.raven.event.EventColorChange;
 import com.raven.form.Home_Form;
+import com.raven.form.Panel_Cliente;
 import com.raven.form.Setting_Form;
 import com.raven.menu.EventMenu;
 import com.raven.properties.SystemProperties;
@@ -28,7 +29,9 @@ public class Main extends javax.swing.JFrame {
             public void selectedMenu(int index) {
                 if (index == 0) {
                     mainBody.displayForm(new Home_Form());
-                } else if (index == 6) {
+                }else if (index==1) {
+                    mainBody.displayForm(new Panel_Cliente());
+                }  else if (index == 6) {
                     mainBody.displayForm(settingForm, "Setting");
                 }
             }
