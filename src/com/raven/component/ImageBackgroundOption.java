@@ -180,6 +180,11 @@ public class ImageBackgroundOption extends javax.swing.JPanel {
 
         buttomImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/background/bg_1_small.jpg"))); // NOI18N
         buttomImage1.setSelected(true);
+        buttomImage1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttomImage1ActionPerformed(evt);
+            }
+        });
 
         buttomImage2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/background/bg_2_small.jpg"))); // NOI18N
 
@@ -234,6 +239,10 @@ public class ImageBackgroundOption extends javax.swing.JPanel {
                 .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void buttomImage1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttomImage1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttomImage1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
