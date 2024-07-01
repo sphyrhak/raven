@@ -16,7 +16,7 @@ public class Product_Form extends Form {
 
         jLabel1 = new javax.swing.JLabel();
 
-        jLabel1.setText("Producto");
+        jLabel1.setText("Product");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
