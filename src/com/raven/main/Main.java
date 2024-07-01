@@ -3,6 +3,8 @@ package com.raven.main;
 import com.raven.event.EventColorChange;
 import com.raven.form.Home_Form;
 import com.raven.form.Client_Form;
+import com.raven.form.Product_Form;
+import com.raven.form.Sale_Form;
 import com.raven.form.Setting_Form;
 import com.raven.menu.EventMenu;
 import com.raven.properties.SystemProperties;
@@ -31,6 +33,10 @@ public class Main extends javax.swing.JFrame {
                     mainBody.displayForm(new Home_Form());
                 }else if (index==1) {
                     mainBody.displayForm(new Client_Form());
+                }else if (index==2) {
+                    mainBody.displayForm(new Sale_Form());
+                }else if (index==3) {
+                    mainBody.displayForm(new Product_Form());
                 }  else if (index == 4) {
                     mainBody.displayForm(settingForm, "Configuracion");
                 }
@@ -84,11 +90,17 @@ public class Main extends javax.swing.JFrame {
         header = new com.raven.component.Header();
         menu = new com.raven.menu.Menu();
         mainBody = new com.raven.component.MainBody();
+        btn_Logout = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
         panelBackground1.setBackground(new java.awt.Color(34, 34, 34));
+
+        btn_Logout.setBackground(new java.awt.Color(255, 0, 0));
+        btn_Logout.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btn_Logout.setForeground(new java.awt.Color(255, 255, 255));
+        btn_Logout.setText("Cerrar Sesion");
 
         javax.swing.GroupLayout panelBackground1Layout = new javax.swing.GroupLayout(panelBackground1);
         panelBackground1.setLayout(panelBackground1Layout);
@@ -96,8 +108,13 @@ public class Main extends javax.swing.JFrame {
             panelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(header, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(panelBackground1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelBackground1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelBackground1Layout.createSequentialGroup()
+                        .addGap(56, 56, 56)
+                        .addComponent(btn_Logout)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(mainBody, javax.swing.GroupLayout.DEFAULT_SIZE, 1008, Short.MAX_VALUE)
                 .addContainerGap())
@@ -108,8 +125,12 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(header, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
-                    .addComponent(mainBody, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(mainBody, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
+                    .addGroup(panelBackground1Layout.createSequentialGroup()
+                        .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_Logout)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -164,6 +185,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_Logout;
     private com.raven.component.Header header;
     private com.raven.component.MainBody mainBody;
     private com.raven.menu.Menu menu;
