@@ -2,12 +2,116 @@
 package com.raven.form;
 
 import com.raven.component.Form;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class Product_Form extends Form {
-
+    private int selectedRow = -1;
     public Product_Form() {
         initComponents();
+        addTableMouseListener();
+        
+        // Código para tener bloqueado los campos de texto
+        disableTextFields();
+        //codigo para tener bloqueado los campos de texto
+        txtNombreProducto.setEnabled(false);
+        txtCategoria.setEnabled(false);
+        txtStock.setEnabled(false);
+        txtPrecio.setEnabled(false);
+        txtDescripcion.setEnabled(false);
+        txtStockMax.setEnabled(false);
+        txtStockMin.setEnabled(false);
+        txtUnidadMedida.setEnabled(false);
     }
+    //metodo para la barra de busqueda
+    
+    
+    
+    private void clearTextFields() {
+        txtNombreProducto.setText("");
+        txtCategoria.setText("");
+        txtStock.setText("");
+        txtPrecio.setText("");
+        txtDescripcion.setText("");
+        txtStockMax.setText("");
+        txtStockMin.setText("");
+        txtUnidadMedida.setText("");
+    }
+
+    private void disableTextFields() {
+        txtNombreProducto.setEnabled(false);
+        txtCategoria.setEnabled(false);
+        txtStock.setEnabled(false);
+        txtPrecio.setEnabled(false);
+        txtDescripcion.setEnabled(false);
+        txtStockMax.setEnabled(false);
+        txtStockMin.setEnabled(false);
+        txtUnidadMedida.setEnabled(false);
+    }
+    private void addTableMouseListener() {
+        jTable1.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    selectedRow = jTable1.getSelectedRow();
+                    if (selectedRow != -1) {
+                        loadSelectedRowData(selectedRow);
+                    }
+                }
+            }
+        });
+    }
+    private void loadSelectedRowData(int row) {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        Object[] rowData = getRowData(row);
+        if (rowData != null && rowData.length > 0) {
+            txtNombreProducto.setText(rowData[1].toString());
+            txtCategoria.setText(rowData[2].toString());
+            txtPrecio.setText(rowData[3].toString());
+            txtStock.setText(rowData[4].toString());
+            txtUnidadMedida.setText(rowData[5].toString());
+            txtStockMin.setText(rowData[6].toString());
+            txtStockMax.setText(rowData[7].toString());
+            txtDescripcion.setText(rowData[8].toString());
+
+            enableTextFields();
+        } else {
+            JOptionPane.showMessageDialog(this, "Fila vacía seleccionada. Por favor, selecciona una fila con datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private Object[] getRowData(int row) {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        if (row >= 0 && row < model.getRowCount()) {
+            return new Object[]{
+                model.getValueAt(row, 0),
+                model.getValueAt(row, 1),
+                model.getValueAt(row, 2),
+                model.getValueAt(row, 3),
+                model.getValueAt(row, 4),
+                model.getValueAt(row, 5),
+                model.getValueAt(row, 6),
+                model.getValueAt(row, 7),
+                model.getValueAt(row, 8)
+            };
+        }
+        return null;
+    }
+    private void enableTextFields() {
+        txtNombreProducto.setEnabled(true);
+        txtCategoria.setEnabled(true);
+        txtStock.setEnabled(true);
+        txtPrecio.setEnabled(true);
+        txtDescripcion.setEnabled(true);
+        txtStockMax.setEnabled(true);
+        txtStockMin.setEnabled(true);
+        txtUnidadMedida.setEnabled(true);
+    }
+     
+    
 
 
     @SuppressWarnings("unchecked")
@@ -37,7 +141,8 @@ public class Product_Form extends Form {
         btnGuardar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txtSearchBar = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
 
         jLabel2.setText("PRODUCTOS");
 
@@ -173,7 +278,13 @@ public class Product_Form extends Form {
             }
         });
 
-        jTextField1.setText("Ingresa nombre de producto:");
+        txtSearchBar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchBarActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Ingrese el nombre del producto");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -231,7 +342,8 @@ public class Product_Form extends Form {
                                     .addComponent(btnGuardar)
                                     .addGap(18, 18, 18)
                                     .addComponent(btnEliminar))
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel1)))))
                 .addContainerGap(103, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -260,8 +372,10 @@ public class Product_Form extends Form {
                     .addComponent(lblDescripción)
                     .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAgregar))
-                .addGap(32, 32, 32)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -275,6 +389,15 @@ public class Product_Form extends Form {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
+        if (selectedRow != -1) {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.removeRow(selectedRow);
+            clearTextFields();
+            disableTextFields();
+            selectedRow = -1;
+        } else {
+            JOptionPane.showMessageDialog(this, "No hay fila seleccionada para eliminar", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void txtCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCategoriaActionPerformed
@@ -311,15 +434,132 @@ public class Product_Form extends Form {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
+        // Obtener los datos de los campos de texto
+    String nombreProducto = txtNombreProducto.getText();
+    String categoria = txtCategoria.getText();
+    String precio = txtPrecio.getText();
+    String stock = txtStock.getText();
+    String unidadMedida = txtUnidadMedida.getText();
+    String stockMin = txtStockMin.getText();
+    String stockMax = txtStockMax.getText();
+    String descripcion = txtDescripcion.getText();
+
+    // Verificar si todos los campos están llenos
+    if (nombreProducto.isEmpty() || categoria.isEmpty() || precio.isEmpty() || 
+        stock.isEmpty() || unidadMedida.isEmpty() || stockMin.isEmpty() || 
+        stockMax.isEmpty() || descripcion.isEmpty()) {
+        // Mostrar un mensaje de error si hay campos vacíos
+        JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Obtener el modelo de la tabla
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    
+    // Insertar los datos en la primera posición de la tabla
+    model.insertRow(0, new Object[]{model.getRowCount() + 1, nombreProducto, categoria, 
+                                    Double.parseDouble(precio), Integer.parseInt(stock), 
+                                    unidadMedida, Integer.parseInt(stockMin), 
+                                    Integer.parseInt(stockMax), descripcion});
+
+    // Bloquear los campos de texto nuevamente
+    txtNombreProducto.setEnabled(false);
+    txtCategoria.setEnabled(false);
+    txtStock.setEnabled(false);
+    txtPrecio.setEnabled(false);
+    txtDescripcion.setEnabled(false);
+    txtStockMax.setEnabled(false);
+    txtStockMin.setEnabled(false);
+    txtUnidadMedida.setEnabled(false);
+
+    // Limpiar los campos de texto
+    txtNombreProducto.setText("");
+    txtCategoria.setText("");
+    txtStock.setText("");
+    txtPrecio.setText("");
+    txtDescripcion.setText("");
+    txtStockMax.setText("");
+    txtStockMin.setText("");
+    txtUnidadMedida.setText("");
+    
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
+        txtNombreProducto.setEnabled(true);
+        txtCategoria.setEnabled(true);
+        txtStock.setEnabled(true);
+        txtPrecio.setEnabled(true);
+        txtDescripcion.setEnabled(true);
+        txtStockMax.setEnabled(true);
+        txtStockMin.setEnabled(true);
+        txtUnidadMedida.setEnabled(true);
+        // Limpiar los campos de texto
+    txtNombreProducto.setText("");
+    txtCategoria.setText("");
+    txtStock.setText("");
+    txtPrecio.setText("");
+    txtDescripcion.setText("");
+    txtStockMax.setText("");
+    txtStockMin.setText("");
+    txtUnidadMedida.setText("");
+        
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
+        if (selectedRow != -1) {
+            // Obtener los datos de los campos de texto
+            String nombreProducto = txtNombreProducto.getText();
+            String categoria = txtCategoria.getText();
+            String precio = txtPrecio.getText();
+            String stock = txtStock.getText();
+            String unidadMedida = txtUnidadMedida.getText();
+            String stockMin = txtStockMin.getText();
+            String stockMax = txtStockMax.getText();
+            String descripcion = txtDescripcion.getText();
+
+            // Verificar si todos los campos están llenos
+            if (nombreProducto.isEmpty() || categoria.isEmpty() || precio.isEmpty() || 
+                stock.isEmpty() || unidadMedida.isEmpty() || stockMin.isEmpty() || 
+                stockMax.isEmpty() || descripcion.isEmpty()) {
+                // Mostrar un mensaje de error si hay campos vacíos
+                JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Actualizar la fila seleccionada en la tabla
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setValueAt(nombreProducto, selectedRow, 1);
+            model.setValueAt(categoria, selectedRow, 2);
+            model.setValueAt(Double.parseDouble(precio), selectedRow, 3);
+            model.setValueAt(Integer.parseInt(stock), selectedRow, 4);
+            model.setValueAt(unidadMedida, selectedRow, 5);
+            model.setValueAt(Integer.parseInt(stockMin), selectedRow, 6);
+            model.setValueAt(Integer.parseInt(stockMax), selectedRow, 7);
+            model.setValueAt(descripcion, selectedRow, 8);
+
+            // Limpiar los campos de texto
+            clearTextFields();
+
+            // Deshabilitar los campos de texto
+            disableTextFields();
+
+            // Resetear la fila seleccionada
+            selectedRow = -1;
+        } else {
+            JOptionPane.showMessageDialog(this, "No hay fila seleccionada para actualizar", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void txtSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBarActionPerformed
+        // TODO add your handling code here:
+        
+        
+        
+    }//GEN-LAST:event_txtSearchBarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -327,10 +567,10 @@ public class Product_Form extends Form {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblCategoria;
     private javax.swing.JLabel lblDescripción;
     private javax.swing.JLabel lblNombreProducto;
@@ -343,6 +583,7 @@ public class Product_Form extends Form {
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtNombreProducto;
     private javax.swing.JTextField txtPrecio;
+    private javax.swing.JTextField txtSearchBar;
     private javax.swing.JTextField txtStock;
     private javax.swing.JTextField txtStockMax;
     private javax.swing.JTextField txtStockMin;
