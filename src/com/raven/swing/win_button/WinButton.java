@@ -1,6 +1,7 @@
 package com.raven.swing.win_button;
 
 import com.raven.swing.PanelBackground;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
@@ -50,8 +51,18 @@ public class WinButton extends javax.swing.JPanel {
         cmdClose.setBackground(new java.awt.Color(240, 61, 61));
 
         cmdMi.setBackground(new java.awt.Color(227, 226, 68));
+        cmdMi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdMiActionPerformed(evt);
+            }
+        });
 
         cmdRe.setBackground(new java.awt.Color(67, 199, 51));
+        cmdRe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdReActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -77,6 +88,15 @@ public class WinButton extends javax.swing.JPanel {
                 .addGap(3, 3, 3))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cmdMiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmdMiActionPerformed
+
+    private void cmdReActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdReActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_cmdReActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.raven.swing.win_button.Button cmdClose;

@@ -55,6 +55,9 @@
           <Color blue="44" green="e2" red="e3" type="rgb"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdMiActionPerformed"/>
+      </Events>
     </Component>
     <Component class="com.raven.swing.win_button.Button" name="cmdRe">
       <Properties>
@@ -62,6 +65,9 @@
           <Color blue="33" green="c7" red="43" type="rgb"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdReActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

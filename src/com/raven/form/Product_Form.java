@@ -2,21 +2,29 @@
 package com.raven.form;
 
 import com.raven.component.Form;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.BorderLayout;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.RowFilter;
+import javax.swing.table.TableRowSorter;
+
+
+
 
 public class Product_Form extends Form {
     private int selectedRow = -1;
+    
     public Product_Form() {
         initComponents();
         addTableMouseListener();
+       
+        
         
         // Código para tener bloqueado los campos de texto
-        disableTextFields();
+        disableTextFields();//Sirve para bloquear los campos del texto al inicio de la app
         //codigo para tener bloqueado los campos de texto
         txtNombreProducto.setEnabled(false);
         txtCategoria.setEnabled(false);
@@ -28,7 +36,19 @@ public class Product_Form extends Form {
         txtUnidadMedida.setEnabled(false);
     }
     //metodo para la barra de busqueda
-    
+    private void filtrarProductos(String textoBusqueda) {
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+    jTable1.setRowSorter(sorter);
+
+    if (textoBusqueda.isEmpty()) {
+        // Si el campo de búsqueda está vacío, muestra todas las filas
+        sorter.setRowFilter(null);
+    } else {
+        // Aplica un filtro que ignore mayúsculas y minúsculas y busque coincidencias parciales en cualquier columna
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + textoBusqueda));
+    }
+}
     
     
     private void clearTextFields() {
@@ -110,6 +130,10 @@ public class Product_Form extends Form {
         txtStockMin.setEnabled(true);
         txtUnidadMedida.setEnabled(true);
     }
+    private void agregarFilaATabla(String nombreProducto, String categoria, double precio, String stock, String unidadMedida, String stockMin, String stockMax, String descripcion) {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.addRow(new Object[]{model.getRowCount() + 1, nombreProducto, categoria, precio, Integer.parseInt(stock), unidadMedida, Integer.parseInt(stockMin), Integer.parseInt(stockMax), descripcion});
+    }
      
     
 
@@ -144,77 +168,142 @@ public class Product_Form extends Form {
         txtSearchBar = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
 
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 51));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("PRODUCTOS");
 
+        lblNombreProducto.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        lblNombreProducto.setForeground(new java.awt.Color(255, 255, 0));
         lblNombreProducto.setText("Nombre Producto:");
 
+        txtNombreProducto.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         txtNombreProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNombreProductoActionPerformed(evt);
             }
         });
+        txtNombreProducto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreProductoKeyTyped(evt);
+            }
+        });
 
+        lblCategoria.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        lblCategoria.setForeground(new java.awt.Color(255, 255, 0));
         lblCategoria.setText("Categoría:");
 
+        txtCategoria.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         txtCategoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCategoriaActionPerformed(evt);
             }
         });
+        txtCategoria.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCategoriaKeyTyped(evt);
+            }
+        });
 
+        lblStock.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        lblStock.setForeground(new java.awt.Color(255, 255, 0));
         lblStock.setText("Stock:");
 
+        txtStock.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         txtStock.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtStockActionPerformed(evt);
             }
         });
+        txtStock.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtStockKeyTyped(evt);
+            }
+        });
 
+        lblPrecio.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        lblPrecio.setForeground(new java.awt.Color(255, 255, 0));
         lblPrecio.setText("Precio:");
 
+        txtPrecio.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         txtPrecio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPrecioActionPerformed(evt);
             }
         });
+        txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioKeyTyped(evt);
+            }
+        });
 
+        txtDescripcion.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         txtDescripcion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDescripcionActionPerformed(evt);
             }
         });
+        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDescripcionKeyTyped(evt);
+            }
+        });
 
+        lblStockMax.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        lblStockMax.setForeground(new java.awt.Color(255, 255, 0));
         lblStockMax.setText("Stock max:");
 
+        lblDescripción.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        lblDescripción.setForeground(new java.awt.Color(255, 255, 0));
         lblDescripción.setText("Descripción:");
 
+        txtStockMax.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         txtStockMax.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtStockMaxActionPerformed(evt);
             }
         });
+        txtStockMax.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtStockMaxKeyTyped(evt);
+            }
+        });
 
+        txtStockMin.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         txtStockMin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtStockMinActionPerformed(evt);
             }
         });
+        txtStockMin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtStockMinKeyTyped(evt);
+            }
+        });
 
+        txtUnidadMedida.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         txtUnidadMedida.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUnidadMedidaActionPerformed(evt);
             }
         });
+        txtUnidadMedida.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtUnidadMedidaKeyTyped(evt);
+            }
+        });
 
+        lblStockMin.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        lblStockMin.setForeground(new java.awt.Color(255, 255, 0));
         lblStockMin.setText("Stock min:");
 
+        lblUnidadMedida.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        lblUnidadMedida.setForeground(new java.awt.Color(255, 255, 0));
         lblUnidadMedida.setText("Unidad de medida:");
 
+        jTable1.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
@@ -239,17 +328,15 @@ public class Product_Form extends Form {
         jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(4).setResizable(false);
-            jTable1.getColumnModel().getColumn(5).setResizable(false);
-            jTable1.getColumnModel().getColumn(6).setResizable(false);
-            jTable1.getColumnModel().getColumn(7).setResizable(false);
-            jTable1.getColumnModel().getColumn(8).setResizable(false);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(40);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(90);
+            jTable1.getColumnModel().getColumn(3).setPreferredWidth(40);
+            jTable1.getColumnModel().getColumn(4).setPreferredWidth(30);
+            jTable1.getColumnModel().getColumn(6).setPreferredWidth(30);
+            jTable1.getColumnModel().getColumn(7).setPreferredWidth(30);
         }
 
+        btnNuevo.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         btnNuevo.setText("Nuevo");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -257,6 +344,7 @@ public class Product_Form extends Form {
             }
         });
 
+        btnGuardar.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -264,6 +352,7 @@ public class Product_Form extends Form {
             }
         });
 
+        btnEliminar.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         btnEliminar.setText("Eliminar");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -271,6 +360,7 @@ public class Product_Form extends Form {
             }
         });
 
+        btnAgregar.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -278,112 +368,115 @@ public class Product_Form extends Form {
             }
         });
 
+        txtSearchBar.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         txtSearchBar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSearchBarActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("Ingrese el nombre del producto");
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 51));
+        jLabel1.setText("Ingrese el nombre del producto:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(439, 439, 439)
-                        .addComponent(jLabel2))
+                        .addComponent(btnNuevo)
+                        .addGap(24, 24, 24)
+                        .addComponent(btnGuardar)
+                        .addGap(20, 20, 20)
+                        .addComponent(btnEliminar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblUnidadMedida)
+                                .addGap(5, 5, 5)
+                                .addComponent(txtUnidadMedida, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                .addGap(10, 10, 10)
+                                .addComponent(lblStockMin)
+                                .addGap(6, 6, 6)
+                                .addComponent(txtStockMin, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                .addGap(8, 8, 8)
+                                .addComponent(lblStockMax)
+                                .addGap(11, 11, 11)
+                                .addComponent(txtStockMax, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                .addGap(10, 10, 10)
+                                .addComponent(lblDescripción)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblNombreProducto)
+                                .addGap(9, 9, 9)
+                                .addComponent(txtNombreProducto)
+                                .addGap(10, 10, 10)
+                                .addComponent(lblCategoria)
+                                .addGap(9, 9, 9)
+                                .addComponent(txtCategoria)
+                                .addGap(48, 48, 48)
+                                .addComponent(lblPrecio)
+                                .addGap(7, 7, 7)
+                                .addComponent(txtPrecio)
+                                .addGap(60, 60, 60)
+                                .addComponent(lblStock, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(13, 13, 13)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtStock, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+                            .addComponent(txtDescripcion))
+                        .addGap(6, 6, 6))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblNombreProducto)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblCategoria)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblPrecio)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblStock)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(lblUnidadMedida)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(lblStockMin)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtStockMin, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(lblStockMax)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtStockMax, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(lblDescripción)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnAgregar))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(35, 35, 35)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 854, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(btnNuevo)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(btnGuardar)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(btnEliminar))
-                                .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel1)))))
-                .addContainerGap(103, Short.MAX_VALUE))
+                        .addComponent(txtSearchBar)
+                        .addGap(38, 38, 38)
+                        .addComponent(btnAgregar)))
+                .addGap(48, 48, 48))
+            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jLabel2)
-                .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblNombreProducto)
                     .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblCategoria)
                     .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPrecio)
                     .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblStock)
-                    .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblStock)
+                        .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblUnidadMedida)
                     .addComponent(txtUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblStockMin)
                     .addComponent(txtStockMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblStockMax)
                     .addComponent(txtStockMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblDescripción)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAgregar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblDescripción)
+                        .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(29, 29, 29)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAgregar))
+                .addGap(15, 15, 15)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnNuevo)
                     .addComponent(btnGuardar)
                     .addComponent(btnEliminar))
-                .addContainerGap(161, Short.MAX_VALUE))
+                .addGap(50, 50, 50))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -402,6 +495,7 @@ public class Product_Form extends Form {
 
     private void txtCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCategoriaActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtCategoriaActionPerformed
 
     private void txtNombreProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreProductoActionPerformed
@@ -410,10 +504,28 @@ public class Product_Form extends Form {
 
     private void txtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioActionPerformed
         // TODO add your handling code here:
+        try {
+    double precio = Double.parseDouble(txtPrecio.getText());
+    // Aquí puedes usar 'precio' según tus necesidades
+} catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(this, "Por favor, ingresa un precio válido.", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
     }//GEN-LAST:event_txtPrecioActionPerformed
 
     private void txtStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStockActionPerformed
         // TODO add your handling code here:
+        try {
+    int stock = Integer.parseInt(txtStock.getText());
+    if (stock < 0) {
+        JOptionPane.showMessageDialog(this, "El stock debe ser un número entero positivo.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    // Aquí puedes usar 'stock' según tus necesidades
+} catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(this, "Por favor, ingresa un valor numérico válido para el stock.", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
     }//GEN-LAST:event_txtStockActionPerformed
 
     private void txtUnidadMedidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUnidadMedidaActionPerformed
@@ -422,10 +534,32 @@ public class Product_Form extends Form {
 
     private void txtStockMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStockMinActionPerformed
         // TODO add your handling code here:
+        try {
+    int stockMin = Integer.parseInt(txtStockMin.getText());
+    if (stockMin < 0) {
+        JOptionPane.showMessageDialog(this, "El stock mínimo debe ser un número entero positivo.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    // Aquí puedes usar 'stockMin' según tus necesidades
+} catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(this, "Por favor, ingresa un valor numérico válido para el stock mínimo.", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
     }//GEN-LAST:event_txtStockMinActionPerformed
 
     private void txtStockMaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStockMaxActionPerformed
         // TODO add your handling code here:
+        try {
+    int stockMax = Integer.parseInt(txtStockMax.getText());
+    if (stockMax < 0) {
+        JOptionPane.showMessageDialog(this, "El stock máximo debe ser un número entero positivo.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    // Aquí puedes usar 'stockMax' según tus necesidades
+} catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(this, "Por favor, ingresa un valor numérico válido para el stock máximo.", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
     }//GEN-LAST:event_txtStockMaxActionPerformed
 
     private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
@@ -481,7 +615,10 @@ public class Product_Form extends Form {
     txtStockMax.setText("");
     txtStockMin.setText("");
     txtUnidadMedida.setText("");
+    //Verificar si el precio es numérico
     
+    
+        
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
@@ -508,6 +645,10 @@ public class Product_Form extends Form {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
+        
+       
+        
+        
         if (selectedRow != -1) {
             // Obtener los datos de los campos de texto
             String nombreProducto = txtNombreProducto.getText();
@@ -552,14 +693,91 @@ public class Product_Form extends Form {
         }
         
         
+        
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void txtSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBarActionPerformed
         // TODO add your handling code here:
-        
+        // Obtén el texto ingresado en el campo de búsqueda
+    String textoBusqueda = txtSearchBar.getText().trim();
+
+    // Filtra la tabla de productos según el texto de búsqueda
+    filtrarProductos(textoBusqueda);
         
         
     }//GEN-LAST:event_txtSearchBarActionPerformed
+
+    private void txtNombreProductoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreProductoKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();//Llamamos el evento
+        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
+            evt.consume(); //evitar que se capture el digito
+            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_txtNombreProductoKeyTyped
+
+    private void txtCategoriaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCategoriaKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();//Llamamos el evento
+        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
+            evt.consume(); //evitar que se capture el digito
+            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_txtCategoriaKeyTyped
+
+    private void txtUnidadMedidaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUnidadMedidaKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();//Llamamos el evento
+        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
+            evt.consume(); //evitar que se capture el digito
+            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_txtUnidadMedidaKeyTyped
+
+    private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();//Llamamos el evento
+        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
+            evt.consume(); //evitar que se capture el digito
+            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_txtDescripcionKeyTyped
+
+    private void txtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();//Llamamos el evento
+        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
+            evt.consume(); //evitar que se capture el digito
+            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_txtPrecioKeyTyped
+
+    private void txtStockKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtStockKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();//Llamamos el evento
+        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
+            evt.consume(); //evitar que se capture el digito
+            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_txtStockKeyTyped
+
+    private void txtStockMinKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtStockMinKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();//Llamamos el evento
+        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
+            evt.consume(); //evitar que se capture el digito
+            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_txtStockMinKeyTyped
+
+    private void txtStockMaxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtStockMaxKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();//Llamamos el evento
+        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
+            evt.consume(); //evitar que se capture el digito
+            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_txtStockMaxKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
