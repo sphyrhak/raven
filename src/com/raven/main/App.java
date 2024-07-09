@@ -30,9 +30,14 @@ public class App {
         // Crear y mostrar el frame principal
         Main mainFrame = new Main();
         mainFrame.setVisible(true);
-
+     
         // Iniciar conexión a la base de datos en segundo plano
         //new DatabaseConnectionTask(mainFrame).execute();
     }
+    /*public stattic void logout(){
+           App.setContentPane(App.LoginForm);  //cambiar por el nombre del jframe del login
+           App.repaint();
+           App.revalidate();
+    */
     
 }

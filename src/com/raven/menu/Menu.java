@@ -59,11 +59,12 @@ public class Menu extends javax.swing.JPanel {
         addMenu("Venta", "3", 2);
         addMenu("Producto", "4", 3);
         addMenu("Configuración", "7", 4);
-//        addMenu("User", "6", 5);
-//        addMenu("Setting", "7", 6);
-//        addMenu("Expense", "8", 7);
-//        addMenu("Income", "9", 8);
-//        addMenu("Message", "10", 9);
+//        addMenu("Cerrar Sesion", "11", 11);
+//        addMenu(" ", " ", 5);
+//        addMenu(" ", " ", 6);
+//        addMenu(" ", " ", 7);
+//        addMenu(" ", " ", 8);
+//        addMenu(" ", " ", 9);
         //  add more menu here
         menu.repaint();
         menu.revalidate();
