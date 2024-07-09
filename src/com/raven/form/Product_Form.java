@@ -169,12 +169,12 @@ public class Product_Form extends Form {
         jLabel1 = new javax.swing.JLabel();
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 51));
+        jLabel2.setForeground(new java.awt.Color(255, 204, 0));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("PRODUCTOS");
 
         lblNombreProducto.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblNombreProducto.setForeground(new java.awt.Color(255, 255, 0));
+        lblNombreProducto.setForeground(new java.awt.Color(255, 204, 0));
         lblNombreProducto.setText("Nombre Producto:");
 
         txtNombreProducto.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -190,7 +190,7 @@ public class Product_Form extends Form {
         });
 
         lblCategoria.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblCategoria.setForeground(new java.awt.Color(255, 255, 0));
+        lblCategoria.setForeground(new java.awt.Color(255, 204, 0));
         lblCategoria.setText("Categoría:");
 
         txtCategoria.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -206,7 +206,7 @@ public class Product_Form extends Form {
         });
 
         lblStock.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblStock.setForeground(new java.awt.Color(255, 255, 0));
+        lblStock.setForeground(new java.awt.Color(255, 204, 0));
         lblStock.setText("Stock:");
 
         txtStock.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -222,7 +222,7 @@ public class Product_Form extends Form {
         });
 
         lblPrecio.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblPrecio.setForeground(new java.awt.Color(255, 255, 0));
+        lblPrecio.setForeground(new java.awt.Color(255, 204, 0));
         lblPrecio.setText("Precio:");
 
         txtPrecio.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -250,11 +250,11 @@ public class Product_Form extends Form {
         });
 
         lblStockMax.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblStockMax.setForeground(new java.awt.Color(255, 255, 0));
+        lblStockMax.setForeground(new java.awt.Color(255, 204, 51));
         lblStockMax.setText("Stock max:");
 
         lblDescripción.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblDescripción.setForeground(new java.awt.Color(255, 255, 0));
+        lblDescripción.setForeground(new java.awt.Color(255, 204, 0));
         lblDescripción.setText("Descripción:");
 
         txtStockMax.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -294,17 +294,17 @@ public class Product_Form extends Form {
         });
 
         lblStockMin.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblStockMin.setForeground(new java.awt.Color(255, 255, 0));
+        lblStockMin.setForeground(new java.awt.Color(255, 204, 0));
         lblStockMin.setText("Stock min:");
 
         lblUnidadMedida.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblUnidadMedida.setForeground(new java.awt.Color(255, 255, 0));
+        lblUnidadMedida.setForeground(new java.awt.Color(255, 204, 0));
         lblUnidadMedida.setText("Unidad de medida:");
 
         jTable1.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "ID", "Nombre producto", "Categoría", "Precio", "Stock", "Unidad de medida", "Stock min", "Stock max", "Descripción"
@@ -376,7 +376,7 @@ public class Product_Form extends Form {
         });
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 51));
+        jLabel1.setForeground(new java.awt.Color(255, 204, 0));
         jLabel1.setText("Ingrese el nombre del producto:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
