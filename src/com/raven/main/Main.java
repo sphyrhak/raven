@@ -39,7 +39,7 @@ public class Main extends javax.swing.JFrame {
                     mainBody.displayForm(new Product_Form());
                 }  else if (index == 4) {
                     mainBody.displayForm(settingForm, "Configuracion");
-                }
+                } 
             }
         });
         ThemeColorChange.getInstance().addThemes(new ThemeColor(new Color(34, 34, 34), Color.WHITE) {
