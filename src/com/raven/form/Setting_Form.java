@@ -77,10 +77,10 @@ public class Setting_Form extends Form {
 
         lbDark.setFont(new java.awt.Font("sansserif", 1, 16)); // NOI18N
         lbDark.setForeground(new java.awt.Color(230, 230, 230));
-        lbDark.setText("Dark mode");
+        lbDark.setText("Modo oscuro");
 
         jLabel2.setForeground(new java.awt.Color(128, 128, 128));
-        jLabel2.setText("Use darker color paletter for system backgrounds and compatible apps");
+        jLabel2.setText("Utilice una paleta de colores más oscura para fondos del sistema y aplicaciones compatibles");
 
         jPanel2.setOpaque(false);
 
@@ -131,10 +131,10 @@ public class Setting_Form extends Form {
 
         lbColor.setFont(new java.awt.Font("sansserif", 1, 16)); // NOI18N
         lbColor.setForeground(new java.awt.Color(230, 230, 230));
-        lbColor.setText("Theme Color");
+        lbColor.setText("Tema de color");
 
         jLabel4.setForeground(new java.awt.Color(128, 128, 128));
-        jLabel4.setText("Select color to set theme system");
+        jLabel4.setText("Seleccione un tema de color para el sistema");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);

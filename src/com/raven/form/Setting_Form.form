@@ -80,7 +80,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="e6" green="e6" red="e6" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Dark mode"/>
+            <Property name="text" type="java.lang.String" value="Modo oscuro"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
@@ -88,7 +88,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="80" green="80" red="80" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Use darker color paletter for system backgrounds and compatible apps"/>
+            <Property name="text" type="java.lang.String" value="Utilice una paleta de colores m&#xe1;s oscura para fondos del sistema y aplicaciones compatibles"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JPanel" name="jPanel2">
@@ -175,7 +175,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="e6" green="e6" red="e6" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Theme Color"/>
+            <Property name="text" type="java.lang.String" value="Tema de color"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
@@ -183,7 +183,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="80" green="80" red="80" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Select color to set theme system"/>
+            <Property name="text" type="java.lang.String" value="Seleccione un tema de color para el sistema"/>
           </Properties>
         </Component>
         <Component class="com.raven.component.ColorOption" name="colorOption1">

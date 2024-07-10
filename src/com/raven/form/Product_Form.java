@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.RowFilter;
@@ -15,6 +16,7 @@ import javax.swing.table.TableRowSorter;
 
 
 public class Product_Form extends Form {
+    
     private int selectedRow = -1;
     
     public Product_Form() {
@@ -75,7 +77,7 @@ public class Product_Form extends Form {
     private void addTableMouseListener() {
         jTable1.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                if (e.getClickCount() == 1) {
                     selectedRow = jTable1.getSelectedRow();
                     if (selectedRow != -1) {
                         loadSelectedRowData(selectedRow);
@@ -135,7 +137,7 @@ public class Product_Form extends Form {
         model.addRow(new Object[]{model.getRowCount() + 1, nombreProducto, categoria, precio, Integer.parseInt(stock), unidadMedida, Integer.parseInt(stockMin), Integer.parseInt(stockMax), descripcion});
     }
      
-    
+   
 
 
     @SuppressWarnings("unchecked")
@@ -307,7 +309,7 @@ public class Product_Form extends Form {
 
             },
             new String [] {
-                "ID", "Nombre producto", "Categoría", "Precio", "Stock", "Unidad de medida", "Stock min", "Stock max", "Descripción"
+                "ID", "NOMBRE PRODUCTO", "CATEGORÍA", "PRECIO", "STOCK", "UNIDAD DE MEDIDA", "STOCK MIN", "STOCK MAX", "DESCRIPCIÓN"
             }
         ) {
             Class[] types = new Class [] {
@@ -325,6 +327,7 @@ public class Product_Form extends Form {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setRowHeight(25);
         jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {

@@ -80,7 +80,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="e6" green="e6" red="e6" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Background Image"/>
+            <Property name="text" type="java.lang.String" value="Fondo de pantalla"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
@@ -88,7 +88,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="80" green="80" red="80" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Use simple image as background of system"/>
+            <Property name="text" type="java.lang.String" value="Usa una simple imagen como fondo del sistema"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JPanel" name="jPanel2">

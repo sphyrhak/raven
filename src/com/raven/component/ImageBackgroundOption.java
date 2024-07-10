@@ -126,10 +126,10 @@ public class ImageBackgroundOption extends javax.swing.JPanel {
 
         lbBack.setFont(new java.awt.Font("sansserif", 1, 16)); // NOI18N
         lbBack.setForeground(new java.awt.Color(230, 230, 230));
-        lbBack.setText("Background Image");
+        lbBack.setText("Fondo de pantalla");
 
         jLabel2.setForeground(new java.awt.Color(128, 128, 128));
-        jLabel2.setText("Use simple image as background of system");
+        jLabel2.setText("Usa una simple imagen como fondo del sistema");
 
         jPanel2.setOpaque(false);
 
