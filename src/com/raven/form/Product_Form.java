@@ -2,9 +2,6 @@
 package com.raven.form;
 
 import com.raven.component.Form;
-import java.awt.BorderLayout;
-import java.awt.Color;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
@@ -76,7 +73,7 @@ public class Product_Form extends Form {
     private void addTableMouseListener() {
         jTable1.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                if (e.getClickCount() == 1) {
                     selectedRow = jTable1.getSelectedRow();
                     if (selectedRow != -1) {
                         loadSelectedRowData(selectedRow);
