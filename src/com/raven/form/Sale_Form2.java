@@ -105,7 +105,6 @@ public class Sale_Form2 extends javax.swing.JPanel {
 
         jLabel1.setText("Cliente:");
 
-        jComboBox1.setMaximumRowCount(8);
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione cliente", "Item 2", "Item 3", "Item 4", "dsefw", "dad", "fsfs", "fsfs", "ffs", "ffa", "fafa", "fafa", "affa", "af" }));
 
         jLabel3.setText("DNI:");
@@ -118,7 +117,6 @@ public class Sale_Form2 extends javax.swing.JPanel {
 
         jLabel4.setText("Tipo:");
 
-        jComboBox2.setMaximumRowCount(8);
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione tipo de producto", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -161,8 +159,12 @@ public class Sale_Form2 extends javax.swing.JPanel {
 
         jLabel5.setText("Producto:");
 
-        jComboBox3.setMaximumRowCount(8);
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione producto", "Item 2", "Item 3", "Item 4" }));
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox3ActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("Stock:");
 
@@ -358,7 +360,7 @@ public class Sale_Form2 extends javax.swing.JPanel {
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(10, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(jLabel12)
@@ -594,6 +596,10 @@ public class Sale_Form2 extends javax.swing.JPanel {
     private void jTextField11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField11ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField11ActionPerformed
+
+    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
