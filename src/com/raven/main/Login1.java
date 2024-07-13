@@ -70,14 +70,13 @@ public class Login1 extends javax.swing.JFrame {
         btnIniciar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         pwdContraseña = new javax.swing.JPasswordField();
-        Mostrar = new javax.swing.JCheckBox();
         txtVer = new javax.swing.JLabel();
         txtOcultar = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("LOGIN");
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 500));
@@ -117,23 +116,13 @@ public class Login1 extends javax.swing.JFrame {
         Left.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 17, 166, 155));
         Left.add(pwdContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 321, 267, -1));
 
-        Mostrar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        Mostrar.setForeground(new java.awt.Color(255, 153, 51));
-        Mostrar.setText("Mostrar contraseña");
-        Mostrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MostrarActionPerformed(evt);
-            }
-        });
-        Left.add(Mostrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(216, 371, -1, -1));
-
         txtVer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/ver_32px.png"))); // NOI18N
         txtVer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txtVerMouseClicked(evt);
             }
         });
-        Left.add(txtVer, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 280, 30, 30));
+        Left.add(txtVer, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 310, 30, 30));
 
         txtOcultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/ocultar_32px.png"))); // NOI18N
         txtOcultar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -141,7 +130,7 @@ public class Login1 extends javax.swing.JFrame {
                 txtOcultarMouseClicked(evt);
             }
         });
-        Left.add(txtOcultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 280, 40, 30));
+        Left.add(txtOcultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 310, 40, 30));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -156,10 +145,20 @@ public class Login1 extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(Left, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Left, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
         jPanel1.getAccessibleContext().setAccessibleName("LOGIN");
         jPanel1.getAccessibleContext().setAccessibleDescription("");
 
@@ -187,15 +186,6 @@ public class Login1 extends javax.swing.JFrame {
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUsuarioActionPerformed
-
-    private void MostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MostrarActionPerformed
-        // TODO add your handling code here:
-        if (Mostrar.isSelected()) {
-            pwdContraseña.setEchoChar((char)0);
-        }else{
-            pwdContraseña.setEchoChar('*');
-        }
-    }//GEN-LAST:event_MostrarActionPerformed
 
     private void txtVerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtVerMouseClicked
         txtVer.setVisible(false);
@@ -277,7 +267,6 @@ public class Login1 extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Left;
-    private javax.swing.JCheckBox Mostrar;
     private javax.swing.JButton btnIniciar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
