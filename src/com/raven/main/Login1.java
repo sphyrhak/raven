@@ -224,7 +224,7 @@ public class Login1 extends javax.swing.JFrame {
             GN.setVisible(true);
             dispose();
         }else{
-            JOptionPane.showMessageDialog(null, "Usuario o contraseña es incorrecto");
+            JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
         }  
     }//GEN-LAST:event_btnIniciarMouseClicked
 
