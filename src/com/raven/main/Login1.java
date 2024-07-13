@@ -95,6 +95,11 @@ public class Login1 extends javax.swing.JFrame {
         btnIniciar.setFont(new java.awt.Font("Sitka Display", 0, 20)); // NOI18N
         btnIniciar.setForeground(new java.awt.Color(255, 153, 51));
         btnIniciar.setText("Iniciar Sesion ");
+        btnIniciar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnIniciarMouseClicked(evt);
+            }
+        });
         btnIniciar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnIniciarActionPerformed(evt);
@@ -170,16 +175,13 @@ public class Login1 extends javax.swing.JFrame {
         String contraseña = "123";
         
         String Pwd = new String (pwdContraseña.getPassword());
-        
-        if (txtUsuario.getText().equalsIgnoreCase(usurio) && Pwd.equalsIgnoreCase(contraseña)) {
+        if (txtUsuario.getText().equalsIgnoreCase(usurio) && Pwd.equalsIgnoreCase(contraseña)) {  
             
             
             
         }else{
             JOptionPane.showMessageDialog(null, "Usuario o contraseña es incorrecto");
-        }
-        
-        
+        }  
     }//GEN-LAST:event_btnIniciarActionPerformed
 
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
@@ -210,6 +212,21 @@ public class Login1 extends javax.swing.JFrame {
         // TODO add your handling code here:
         
     }//GEN-LAST:event_formKeyPressed
+
+    private void btnIniciarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarMouseClicked
+        // TODO add your handling code here:
+        String usurio = "admin";
+        String contraseña = "123";
+        
+        String Pwd = new String (pwdContraseña.getPassword());
+        if (txtUsuario.getText().equalsIgnoreCase(usurio) && Pwd.equalsIgnoreCase(contraseña)) {
+            Main GN = new Main();
+            GN.setVisible(true);
+            dispose();
+        }else{
+            JOptionPane.showMessageDialog(null, "Usuario o contraseña es incorrecto");
+        }  
+    }//GEN-LAST:event_btnIniciarMouseClicked
 
     /**
      * @param args the command line arguments
