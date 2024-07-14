@@ -5,6 +5,7 @@ import com.raven.form.Home_Form;
 import com.raven.form.Client_Form;
 import com.raven.form.Product_Form;
 import com.raven.form.Sale_Form;
+import com.raven.form.Sale_Form2;
 import com.raven.form.Setting_Form;
 import com.raven.menu.EventMenu;
 import com.raven.properties.SystemProperties;
@@ -36,8 +37,10 @@ public class Main extends javax.swing.JFrame {
                 }else if (index==2) {
                     mainBody.displayForm(new Sale_Form());
                 }else if (index==3) {
+                    mainBody.displayForm(new Sale_Form2());
+                }else if (index==4) {
                     mainBody.displayForm(new Product_Form());
-                }  else if (index == 4) {
+                }  else if (index == 5) {
                     mainBody.displayForm(settingForm, "Configuracion");
                 } 
             }
