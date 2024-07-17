@@ -4,40 +4,42 @@ package com.raven.main;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-/**
- *
- * @author JENS07
- */
+
+
 public class App {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        // Crear instancia de la clase principal y ejecutar la aplicación
+        // esto es para crear instancia de la clase login
         SwingUtilities.invokeLater(() -> {
-            App app = new App();
-            app.start();
+            Login1 login = new Login1(() -> {
+                startMainApp();
+            });
+            login.setVisible(true);
         });
     }
-    private void start(){
-        // Crear y mostrar el frame principal
-        Main mainFrame = new Main();
-        mainFrame.setVisible(true);
-     
-        // Iniciar conexión a la base de datos en segundo plano
-        //new DatabaseConnectionTask(mainFrame).execute();
+    private static void startMainApp(){
+        // Crear y mostrar el frame principal        
+        SwingUtilities.invokeLater(() -> {
+            Main mainFrame = new Main();
+            mainFrame.setVisible(true);
+        });
     }
-    /*public stattic void logout(){
-           App.setContentPane(App.LoginForm);  //cambiar por el nombre del jframe del login
-           App.repaint();
-           App.revalidate();
-    */
+    
+    public static void onAuthenticationSuccess() {
+        // aqui se cargaran los datos del usuario
+        
+        // luego se carga el main
+        startMainApp();
+    }
     
 }

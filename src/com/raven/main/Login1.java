@@ -3,23 +3,35 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.raven.main;
+
+import com.raven.querys.AccessController;
+import com.raven.main.App;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
+import java.awt.event.*;
 
 /**
  *
  * @author SHIRLEY
  */
 public class Login1 extends javax.swing.JFrame {
+    
+    private AccessController accestController;
+    private Runnable onSuccessCallback;
 
+    
+    public Login1() {
+        this(() -> {}); 
+    }
     /**
      * Creates new form Login1
      */
-    public Login1() {
+    public Login1(Runnable onSuccessCallback) {
+        this.onSuccessCallback = onSuccessCallback;
         initComponents();
         
-        
+        accestController = new AccessController();
         this.setLocationRelativeTo(this);
         this.setLocationRelativeTo(null);//para que la interfaz salga en el medio
         this.txtOcultar.setVisible(false);
@@ -171,17 +183,18 @@ public class Login1 extends javax.swing.JFrame {
 
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
         // Codigo para boton iniciar 
-        String usurio = "admin";
-        String contraseña = "123";
+        String user = txtUsuario.getText();
+        char[] passwordChars  = pwdContraseña.getPassword();
+        String password = new String(passwordChars);
         
-        String Pwd = new String (pwdContraseña.getPassword());
-        if (txtUsuario.getText().equalsIgnoreCase(usurio) && Pwd.equalsIgnoreCase(contraseña)) {  
-            
-            
-            
-        }else{
-            JOptionPane.showMessageDialog(null, "Usuario o contraseña es incorrecto");
-        }  
+        if(accestController.loginUser(user, password)){
+            System.out.println("se puede proceder"+onSuccessCallback);
+            // onSuccessCallback.run();
+            dispose();
+            App.onAuthenticationSuccess();
+        } else {
+            System.out.println("no se puede conectar este user");
+        }
     }//GEN-LAST:event_btnIniciarActionPerformed
 
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
@@ -214,27 +227,12 @@ public class Login1 extends javax.swing.JFrame {
     }//GEN-LAST:event_formKeyPressed
 
     private void btnIniciarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarMouseClicked
-        // TODO add your handling code here:
-        String usurio = "admin";
-        String contraseña = "123";
         
-        String Pwd = new String (pwdContraseña.getPassword());
-        if (txtUsuario.getText().equalsIgnoreCase(usurio) && Pwd.equalsIgnoreCase(contraseña)) {
-            Main GN = new Main();
-            GN.setVisible(true);
-            dispose();
-        }else{
-            JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
-        }  
     }//GEN-LAST:event_btnIniciarMouseClicked
 
     /**
      * @param args the command line arguments
      */
-    
-    //Metodo para confirmar el cierre de jframe
-    
-    //confirmar salida
 
     
     
