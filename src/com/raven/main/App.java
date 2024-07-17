@@ -3,7 +3,7 @@ package com.raven.main;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-
+import com.raven.querys.Permissions;
 
 
 public class App {
@@ -35,9 +35,10 @@ public class App {
         });
     }
     
-    public static void onAuthenticationSuccess() {
+    public static void onAuthenticationSuccess(String idUser, int id_permisos, String nomnbre, String cd_usuario, int dni, String telefono) {
         // aqui se cargaran los datos del usuario
-        
+        Permissions user = Permissions.getInstance(idUser, id_permisos, nomnbre, cd_usuario, dni, telefono);
+
         // luego se carga el main
         startMainApp();
     }

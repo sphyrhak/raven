@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.raven.querys;
 
 import com.raven.connection.ConnectionDB;
@@ -34,22 +31,28 @@ public class AccessController {
         }
         
     }
-    public boolean loginUser(String usuario,String contraseña) {
-        boolean respuesta = false;
+    public User loginUser(String usuario,String contraseña) {
+        User user = null;
         String contraEncriptada = encriptar(contraseña);
         Connection cn= ConnectionDB.conectar();
-        String sql = "SELECT Cd_Usuario, contraseña from tbusuario where Cd_usuario = '" + usuario + "' and contraseña = '" + contraEncriptada + "'";
+        String sql = "SELECT Id_Usuario, Id_Permisos, Nombre, Cd_Usuario, DNI, Teléfono FROM tbusuario WHERE Cd_Usuario = '"+usuario+"' AND Contraseña = '"+contraEncriptada+"'";
         Statement st;
         try {
             st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
-            while (rs.next()) {
-                respuesta = true;
+            if(rs.next()) {
+                String id = rs.getString("Id_Usuario");
+                int id_permisos = rs.getInt("Id_Permisos");
+                String nombre = rs.getString("Nombre");
+                String cd_usuario = rs.getString("Cd_Usuario");
+                int dni = rs.getInt("DNI");
+                String telefono = rs.getString("Teléfono");
+                user = new User(id, id_permisos, nombre, cd_usuario, dni, telefono);
             }
         } catch (SQLException e) {
             System.out.println("Error al Iniciar Sesion"+e);
             JOptionPane.showMessageDialog(null, "Error al Iniciar Sesion");
         }
-        return respuesta;
+        return user;
     }
 }

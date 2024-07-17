@@ -6,6 +6,7 @@ package com.raven.main;
 
 import com.raven.querys.AccessController;
 import com.raven.main.App;
+import com.raven.querys.User;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
@@ -187,11 +188,18 @@ public class Login1 extends javax.swing.JFrame {
         char[] passwordChars  = pwdContraseña.getPassword();
         String password = new String(passwordChars);
         
-        if(accestController.loginUser(user, password)){
-            System.out.println("se puede proceder"+onSuccessCallback);
+        User usuario = accestController.loginUser(user, password);
+        
+        if(usuario != null){
             // onSuccessCallback.run();
+            String id = usuario.getId();
+            int id_permisos = usuario.getId_permisos();
+            String nombre = usuario.getNombre();
+            String cd_usuario = usuario.getCd_usuario();
+            int dni = usuario.getDni();
+            String telefono = usuario.getTelefono();
             dispose();
-            App.onAuthenticationSuccess();
+            App.onAuthenticationSuccess(id, id_permisos, nombre, cd_usuario, dni, telefono);
         } else {
             System.out.println("no se puede conectar este user");
         }
