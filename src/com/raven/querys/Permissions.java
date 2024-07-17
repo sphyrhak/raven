@@ -63,6 +63,13 @@ public class Permissions extends User {
         return instancia;
     }
     
+    // aqui crear metodo para validar el acceso a los paneles
+    public static boolean accessPanel(String panel) {
+        // si el panel existe en el array access
+        return false;
+    }
+    
+    
     public String[] getAccess() {
         return access;
     }
