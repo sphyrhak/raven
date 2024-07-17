@@ -57,16 +57,24 @@ public class Permissions extends User {
     }
     
     public static Permissions getInstance() {
-        if(instancia != null) {
-              System.out.println("error");
+        if(instancia == null) {
+              System.out.println("Error");
         }
         return instancia;
     }
     
     // aqui crear metodo para validar el acceso a los paneles
     public static boolean accessPanel(String panel) {
-        // si el panel existe en el array access
-        return false;
+        if (instancia == null) {
+        throw new IllegalStateException("La instancia de Permissions no está inicializada.");
+    }
+    
+    for (String permiso : instancia.getAccess()) {
+        if (permiso.trim().equalsIgnoreCase(panel)) {
+            return true;
+        }
+    }
+    return false;
     }
     
     

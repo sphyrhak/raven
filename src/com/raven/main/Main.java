@@ -9,6 +9,7 @@ import com.raven.form.Sale_Form2;
 import com.raven.form.Setting_Form;
 import com.raven.menu.EventMenu;
 import com.raven.properties.SystemProperties;
+import com.raven.querys.Permissions;
 import com.raven.theme.SystemTheme;
 import com.raven.theme.ThemeColor;
 import com.raven.theme.ThemeColorChange;
@@ -31,17 +32,31 @@ public class Main extends javax.swing.JFrame {
             @Override
             public void selectedMenu(int index) {
                 if (index == 0) {
-                    mainBody.displayForm(new Home_Form());
+                    if(Permissions.getInstance().accessPanel("ini1cio")){
+                        mainBody.displayForm(new Home_Form());
+                       
+                    } 
+                    
                 }else if (index==1) {
-                    mainBody.displayForm(new Client_Form());
+                    if(Permissions.getInstance().accessPanel("Cliente")){
+                        mainBody.displayForm(new Client_Form());
+                    }
                 }else if (index==2) {
-                    mainBody.displayForm(new Sale_Form());
+                    if(Permissions.getInstance().accessPanel("Venta")){
+                        mainBody.displayForm(new Sale_Form());
+                    }
                 }else if (index==3) {
-                    mainBody.displayForm(new Sale_Form2());
+                    if(Permissions.getInstance().accessPanel("Facturacion")){
+                        mainBody.displayForm(new Sale_Form2());
+                    }
                 }else if (index==4) {
-                    mainBody.displayForm(new Product_Form());
+                    if(Permissions.getInstance().accessPanel("Producto")){
+                        mainBody.displayForm(new Product_Form());
+                    }
                 }  else if (index == 5) {
-                    mainBody.displayForm(settingForm, "Configuracion");
+                    if(Permissions.getInstance().accessPanel("Configuracion")){
+                        mainBody.displayForm(settingForm, "Configuracion");
+                    }
                 } 
             }
         });
@@ -82,7 +97,7 @@ public class Main extends javax.swing.JFrame {
         settingForm.setSelectedThemeColor(pro.getColor());
         settingForm.setDarkMode(pro.isDarkMode());
         settingForm.initBackgroundImage(pro.getBackgroundImage());
-        mainBody.displayForm(new Home_Form());
+        //mainBody.displayForm(new Home_Form());
     }
 
     @SuppressWarnings("unchecked")
