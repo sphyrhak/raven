@@ -2,6 +2,7 @@ package com.raven.menu;
 
 import com.raven.swing.MenuButton;
 import com.raven.theme.SystemTheme;
+import com.raven.querys.Permissions;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -47,6 +48,7 @@ public class Menu extends javax.swing.JPanel {
 
     public Menu() {
         initComponents();
+        jLabel2.setText(Permissions.getInstance().getRol());
         setOpaque(false);
         setBackground(Color.WHITE);
         menu.setLayout(new MigLayout("fillx, wrap, inset 0", "[fill]", "[fill, 36!]0[fill, 36!]"));

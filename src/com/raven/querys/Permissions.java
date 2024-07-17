@@ -56,6 +56,13 @@ public class Permissions extends User {
         return instancia;
     }
     
+    public static Permissions getInstance() {
+        if(instancia != null) {
+              System.out.println("error");
+        }
+        return instancia;
+    }
+    
     public String[] getAccess() {
         return access;
     }
