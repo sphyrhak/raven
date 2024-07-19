@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 
 public class ConnectionDB {
-    public static String url = "jdbc:mysql://localhost/gym-teamgorila?useSSL=false";
+    public static String url = "jdbc:mysql://localhost:3306/gym-teamgorila?useSSL=false";
     public static String usuario = "root";
     public static String clave = "";
     public static String clase = "com.mysql.cj.jdbc.Driver";
