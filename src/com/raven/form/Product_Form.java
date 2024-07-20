@@ -2,8 +2,8 @@
 package com.raven.form;
 
 import com.raven.component.Form;
+import com.raven.connection.ConnectionDB;
 import java.awt.BorderLayout;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,19 +11,30 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
-
+import com.raven.querys.Productos;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.SQLException;
 
 
 
 public class Product_Form extends Form {
     
     private int selectedRow = -1;
+    ConnectionDB con1 = new ConnectionDB();
+    Connection conet;
+    DefaultTableModel modelo;
+    Statement st;
+    ResultSet rs;
+    int idc;
+    
     
     public Product_Form() {
         initComponents();
         addTableMouseListener();
-       
-        
+        mostrarTabla();
         
         // Código para tener bloqueado los campos de texto
         disableTextFields();//Sirve para bloquear los campos del texto al inicio de la app
@@ -132,13 +143,167 @@ public class Product_Form extends Form {
         txtStockMin.setEnabled(true);
         txtUnidadMedida.setEnabled(true);
     }
-    private void agregarFilaATabla(String nombreProducto, String categoria, double precio, String stock, String unidadMedida, String stockMin, String stockMax, String descripcion) {
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.addRow(new Object[]{model.getRowCount() + 1, nombreProducto, categoria, precio, Integer.parseInt(stock), unidadMedida, Integer.parseInt(stockMin), Integer.parseInt(stockMax), descripcion});
-    }
-     
-   
+//    private void agregarFilaATabla(String nombreProducto, String categoria, double precio, String stock, String unidadMedida, String stockMin, String stockMax, String descripcion) {
+//        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+//        model.addRow(new Object[]{model.getRowCount() + 1, nombreProducto, categoria, precio, Integer.parseInt(stock), unidadMedida, Integer.parseInt(stockMin), Integer.parseInt(stockMax), descripcion});
+//    }
 
+    //---------------------------------------------------
+    //METODO PARA TRAER LA BASE DE DATOS A NUESTRO JPANEL
+    //---------------------------------------------------
+    void mostrarTabla(){
+        // Limpiar el modelo de la tabla antes de cargar nuevos datos
+    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+    modelo.setRowCount(0); // Esto elimina todas las filas de la tabla
+
+    // Consulta SQL para obtener datos de la base de datos
+    String sql = "SELECT Id_Producto, NombreProducto, Stock, Stock_Min, Stock_Max, Precio, Categoría, UnidadMedida, DescripciónProducto FROM productos";
+
+    try (Connection conet = con1.conectar(); 
+         Statement st = conet.createStatement(); 
+         ResultSet rs = st.executeQuery(sql)) {
+
+        // Recorrer el ResultSet y agregar filas al modelo de la tabla
+        while (rs.next()) {
+            // Obtener los datos de cada fila en el mismo orden que las columnas del modelo
+            Object[] fila = {
+                rs.getInt("Id_Producto"),
+                rs.getString("NombreProducto"),
+                rs.getInt("Stock"),
+                rs.getInt("Stock_Min"),
+                rs.getInt("Stock_Max"),
+                rs.getDouble("Precio"),
+                rs.getString("Categoría"),
+                rs.getString("UnidadMedida"),
+                rs.getString("DescripciónProducto")
+            };
+
+            // Agregar la fila al modelo de la tabla
+            modelo.addRow(fila);
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error SQL: " + e.getMessage());
+    }
+    }
+    
+    //---------------------------------------------------
+    //METODO PARA AGREGAR A LA BASE DE DATOS
+    //---------------------------------------------------
+    void agregarFila(){
+        // Obtener texto de los campos y limpiar espacios en blanco
+//    String idProducto = txtIdProducto.getText().trim();  // Asume que Id_Producto es un campo de texto
+    String nom = txtNombreProducto.getText().trim();
+    String cate = txtCategoria.getText().trim();
+    String prec = txtPrecio.getText().trim();
+    String stock = txtStock.getText().trim();
+    String stockmin = txtStockMin.getText().trim();
+    String stockmax = txtStockMax.getText().trim();
+    String medida = txtUnidadMedida.getText().trim();
+    String descrip = txtDescripcion.getText().trim();
+    
+    System.out.println("Nombre: " + nom);
+    System.out.println("Categoría: " + cate);
+    System.out.println("Precio: " + prec);
+    System.out.println("Stock: " + stock);
+    System.out.println("Stock Min: " + stockmin);
+    System.out.println("Stock Max: " + stockmax);
+    System.out.println("Unidad Medida: " + medida);
+    System.out.println("Descripción: " + descrip);
+    
+    // Validar que todos los campos están completos
+    if (nom.isEmpty() || cate.isEmpty() || prec.isEmpty() || stock.isEmpty() ||
+        stockmin.isEmpty() || stockmax.isEmpty() || medida.isEmpty() || descrip.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Todos los campos deben estar completos.");
+        return; // Salir del método si hay campos vacíos
+    }
+    
+    // Construir la consulta SQL
+    String sql = "INSERT INTO productos (NombreProducto, Stock, Stock_Min, Stock_Max, Precio, Categoría, UnidadMedida, DescripciónProducto) "
+               + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    
+    try (Connection conet = con1.conectar(); 
+         PreparedStatement pst = conet.prepareStatement(sql)) {
+
+        // Establecer los parámetros de la consulta
+//        pst.setString(1, idProducto);  // Asume que Id_Producto es una cadena; cambia según tu tipo de dato
+        pst.setString(1, nom);
+        pst.setInt(2, Integer.parseInt(stock));          // Convertir a entero si es necesario
+        pst.setInt(3, Integer.parseInt(stockmin));       // Convertir a entero si es necesario
+        pst.setInt(4, Integer.parseInt(stockmax));       // Convertir a entero si es necesario
+        pst.setDouble(5, Double.parseDouble(prec));      // Convertir a doble si es necesario
+        pst.setString(6, cate);
+        pst.setString(7, medida);
+        pst.setString(8, descrip);
+
+        // Ejecutar la consulta
+        int filasAfectadas = pst.executeUpdate();
+        
+        if (filasAfectadas > 0) {
+            JOptionPane.showMessageDialog(null, "Nuevo producto agregado correctamente.");
+            limpiarCampos();
+        } else {
+            JOptionPane.showMessageDialog(null, "No se pudo agregar el producto.");
+        }
+        
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Error en el formato de número: " + e.getMessage());
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error SQL: " + e.getMessage());
+    }
+    }
+    
+    //---------------------------------------------------
+    //METODO PARA LIMPIAR LA TABLA DEL JPANEL 
+    //---------------------------------------------------
+    void limpiarTabla(){
+        for (int i = 0; i <= jTable1.getRowCount(); i++) {
+            modelo.removeRow(i);
+            i = i-1;
+        }
+    }
+    
+    //---------------------------------------------------
+    //METODO PARA LIMPIAR LOS CAMPOS DEL JTABLE
+    //---------------------------------------------------
+    public void limpiarCampos() {
+        // Limpiar todos los campos de texto
+        txtNombreProducto.setText("");
+        txtCategoria.setText("");
+        txtPrecio.setText("");
+        txtStock.setText("");
+        txtStockMin.setText("");
+        txtStockMax.setText("");
+        txtUnidadMedida.setText("");
+        txtDescripcion.setText("");
+    }
+
+    //---------------------------------------------------
+    //METODO PARA ELIMINAR LA FILA DE LA TABLA
+    //---------------------------------------------------
+    void eliminar(){
+        int fila = jTable1.getSelectedRow();
+    if (fila < 0) {
+        JOptionPane.showMessageDialog(null, "Producto no seleccionado");
+    } else {
+        // Obtener el Id_Producto de la fila seleccionada
+        int idProducto = (int) jTable1.getValueAt(fila, 0); // Asume que Id_Producto está en la primera columna
+
+        try {
+            String sql = "DELETE FROM productos WHERE Id_Producto=" + idProducto;
+            conet = con1.conectar();
+            st = conet.createStatement();
+            st.executeUpdate(sql);
+            JOptionPane.showMessageDialog(null, "Producto eliminado");
+
+            // Eliminar la fila del modelo de la tabla
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+            modelo.removeRow(fila);
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+        }
+    }
+    }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -310,11 +475,11 @@ public class Product_Form extends Form {
 
             },
             new String [] {
-                "ID", "NOMBRE PRODUCTO", "CATEGORÍA", "PRECIO", "STOCK", "UNIDAD DE MEDIDA", "STOCK MIN", "STOCK MAX", "DESCRIPCIÓN"
+                "ID", "NombreProducto", "Stock", "Stock_Min", "Stock_Max", "Precio", "Categoría", "Unidad_Medida", "Descripción"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false, false
@@ -498,15 +663,17 @@ public class Product_Form extends Form {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        if (selectedRow != -1) {
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.removeRow(selectedRow);
-            clearTextFields();
-            disableTextFields();
-            selectedRow = -1;
-        } else {
-            JOptionPane.showMessageDialog(this, "No hay fila seleccionada para eliminar", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+//        if (selectedRow != -1) {
+//            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+//            model.removeRow(selectedRow);
+//            clearTextFields();
+//            disableTextFields();
+//            selectedRow = -1;
+//        } else {
+//            JOptionPane.showMessageDialog(this, "No hay fila seleccionada para eliminar", "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+        eliminar(); 
+        mostrarTabla();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void txtCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCategoriaActionPerformed
@@ -585,56 +752,55 @@ public class Product_Form extends Form {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
         // Obtener los datos de los campos de texto
-    String nombreProducto = txtNombreProducto.getText();
-    String categoria = txtCategoria.getText();
-    String precio = txtPrecio.getText();
-    String stock = txtStock.getText();
-    String unidadMedida = txtUnidadMedida.getText();
-    String stockMin = txtStockMin.getText();
-    String stockMax = txtStockMax.getText();
-    String descripcion = txtDescripcion.getText();
+//    String nombreProducto = txtNombreProducto.getText();
+//    String categoria = txtCategoria.getText();
+//    String precio = txtPrecio.getText();
+//    String stock = txtStock.getText();
+//    String unidadMedida = txtUnidadMedida.getText();
+//    String stockMin = txtStockMin.getText();
+//    String stockMax = txtStockMax.getText();
+//    String descripcion = txtDescripcion.getText();
 
     // Verificar si todos los campos están llenos
-    if (nombreProducto.isEmpty() || categoria.isEmpty() || precio.isEmpty() || 
-        stock.isEmpty() || unidadMedida.isEmpty() || stockMin.isEmpty() || 
-        stockMax.isEmpty() || descripcion.isEmpty()) {
-        // Mostrar un mensaje de error si hay campos vacíos
-        JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+//    if (nombreProducto.isEmpty() || categoria.isEmpty() || precio.isEmpty() || 
+//        stock.isEmpty() || unidadMedida.isEmpty() || stockMin.isEmpty() || 
+//        stockMax.isEmpty() || descripcion.isEmpty()) {
+//        // Mostrar un mensaje de error si hay campos vacíos
+//        JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
+//        return;
+//    }
 
     // Obtener el modelo de la tabla
-    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+//    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
     
     // Insertar los datos en la primera posición de la tabla
-    model.insertRow(0, new Object[]{model.getRowCount() + 1, nombreProducto, categoria, 
-                                    Double.parseDouble(precio), Integer.parseInt(stock), 
-                                    unidadMedida, Integer.parseInt(stockMin), 
-                                    Integer.parseInt(stockMax), descripcion});
+//    model.insertRow(0, new Object[]{model.getRowCount() + 1, nombreProducto, categoria, 
+//                                    Double.parseDouble(precio), Integer.parseInt(stock), 
+//                                    unidadMedida, Integer.parseInt(stockMin), 
+//                                    Integer.parseInt(stockMax), descripcion});
 
     // Bloquear los campos de texto nuevamente
-    txtNombreProducto.setEnabled(false);
-    txtCategoria.setEnabled(false);
-    txtStock.setEnabled(false);
-    txtPrecio.setEnabled(false);
-    txtDescripcion.setEnabled(false);
-    txtStockMax.setEnabled(false);
-    txtStockMin.setEnabled(false);
-    txtUnidadMedida.setEnabled(false);
-
-    // Limpiar los campos de texto
-    txtNombreProducto.setText("");
-    txtCategoria.setText("");
-    txtStock.setText("");
-    txtPrecio.setText("");
-    txtDescripcion.setText("");
-    txtStockMax.setText("");
-    txtStockMin.setText("");
-    txtUnidadMedida.setText("");
+//    txtNombreProducto.setEnabled(false);
+//    txtCategoria.setEnabled(false);
+//    txtStock.setEnabled(false);
+//    txtPrecio.setEnabled(false);
+//    txtDescripcion.setEnabled(false);
+//    txtStockMax.setEnabled(false);
+//    txtStockMin.setEnabled(false);
+//    txtUnidadMedida.setEnabled(false);
+//
+//     Limpiar los campos de texto
+//    txtNombreProducto.setText("");
+//    txtCategoria.setText("");
+//    txtStock.setText("");
+//    txtPrecio.setText("");
+//    txtDescripcion.setText("");
+//    txtStockMax.setText("");
+//    txtStockMin.setText("");
+//    txtUnidadMedida.setText("");
     //Verificar si el precio es numérico
-    
-    
-        
+        agregarFila();
+        mostrarTabla();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
@@ -725,74 +891,74 @@ public class Product_Form extends Form {
 
     private void txtNombreProductoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreProductoKeyTyped
         // TODO add your handling code here:
-        char c = evt.getKeyChar();//Llamamos el evento
-        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
-            evt.consume(); //evitar que se capture el digito
-            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-        }
+//        char c = evt.getKeyChar();//Llamamos el evento
+//        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
+//            evt.consume(); //evitar que se capture el digito
+//            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+//        }
     }//GEN-LAST:event_txtNombreProductoKeyTyped
 
     private void txtCategoriaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCategoriaKeyTyped
         // TODO add your handling code here:
-        char c = evt.getKeyChar();//Llamamos el evento
-        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
-            evt.consume(); //evitar que se capture el digito
-            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-        }
+//        char c = evt.getKeyChar();//Llamamos el evento
+//        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
+//            evt.consume(); //evitar que se capture el digito
+//            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+//        }
     }//GEN-LAST:event_txtCategoriaKeyTyped
 
     private void txtUnidadMedidaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUnidadMedidaKeyTyped
         // TODO add your handling code here:
-        char c = evt.getKeyChar();//Llamamos el evento
-        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
-            evt.consume(); //evitar que se capture el digito
-            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-        }
+//        char c = evt.getKeyChar();//Llamamos el evento
+//        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
+//            evt.consume(); //evitar que se capture el digito
+//            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+//        }
     }//GEN-LAST:event_txtUnidadMedidaKeyTyped
 
     private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
         // TODO add your handling code here:
-        char c = evt.getKeyChar();//Llamamos el evento
-        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
-            evt.consume(); //evitar que se capture el digito
-            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-        }
+//        char c = evt.getKeyChar();//Llamamos el evento
+//        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
+//            evt.consume(); //evitar que se capture el digito
+//            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+//        }
     }//GEN-LAST:event_txtDescripcionKeyTyped
 
     private void txtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyTyped
         // TODO add your handling code here:
-        char c = evt.getKeyChar();//Llamamos el evento
-        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
-            evt.consume(); //evitar que se capture el digito
-            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-        }
+//        char c = evt.getKeyChar();//Llamamos el evento
+//        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
+//            evt.consume(); //evitar que se capture el digito
+//            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+//        }
     }//GEN-LAST:event_txtPrecioKeyTyped
 
     private void txtStockKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtStockKeyTyped
         // TODO add your handling code here:
-        char c = evt.getKeyChar();//Llamamos el evento
-        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
-            evt.consume(); //evitar que se capture el digito
-            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-        }
+//        char c = evt.getKeyChar();//Llamamos el evento
+//        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
+//            evt.consume(); //evitar que se capture el digito
+//            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+//        }
     }//GEN-LAST:event_txtStockKeyTyped
 
     private void txtStockMinKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtStockMinKeyTyped
-        // TODO add your handling code here:
-        char c = evt.getKeyChar();//Llamamos el evento
-        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
-            evt.consume(); //evitar que se capture el digito
-            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-        }
+//        // TODO add your handling code here:
+//        char c = evt.getKeyChar();//Llamamos el evento
+//        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
+//            evt.consume(); //evitar que se capture el digito
+//            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+//        }
     }//GEN-LAST:event_txtStockMinKeyTyped
 
     private void txtStockMaxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtStockMaxKeyTyped
         // TODO add your handling code here:
-        char c = evt.getKeyChar();//Llamamos el evento
-        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
-            evt.consume(); //evitar que se capture el digito
-            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-        }
+//        char c = evt.getKeyChar();//Llamamos el evento
+//        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
+//            evt.consume(); //evitar que se capture el digito
+//            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+//        }
     }//GEN-LAST:event_txtStockMaxKeyTyped
 
 
