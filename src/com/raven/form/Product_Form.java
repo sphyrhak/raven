@@ -33,7 +33,16 @@ public class Product_Form extends Form {
     
     public Product_Form() {
         initComponents();
-        addTableMouseListener();
+//        addTableMouseListener();
+jTable1.getSelectionModel().addListSelectionListener(e -> {
+    if (!e.getValueIsAdjusting()) {
+        int fila = jTable1.getSelectedRow();
+        if (fila >= 0) {
+            loadSelectedRowData(fila);
+        }
+    }
+});
+
         mostrarTabla();
         
         // Código para tener bloqueado los campos de texto
@@ -85,54 +94,54 @@ public class Product_Form extends Form {
         txtStockMin.setEnabled(false);
         txtUnidadMedida.setEnabled(false);
     }
-    private void addTableMouseListener() {
-        jTable1.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 1) {
-                    selectedRow = jTable1.getSelectedRow();
-                    if (selectedRow != -1) {
-                        loadSelectedRowData(selectedRow);
-                    }
-                }
-            }
-        });
-    }
-    private void loadSelectedRowData(int row) {
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        Object[] rowData = getRowData(row);
-        if (rowData != null && rowData.length > 0) {
-            txtNombreProducto.setText(rowData[1].toString());
-            txtCategoria.setText(rowData[2].toString());
-            txtPrecio.setText(rowData[3].toString());
-            txtStock.setText(rowData[4].toString());
-            txtUnidadMedida.setText(rowData[5].toString());
-            txtStockMin.setText(rowData[6].toString());
-            txtStockMax.setText(rowData[7].toString());
-            txtDescripcion.setText(rowData[8].toString());
-
-            enableTextFields();
-        } else {
-            JOptionPane.showMessageDialog(this, "Fila vacía seleccionada. Por favor, selecciona una fila con datos.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
     
-    private Object[] getRowData(int row) {
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        if (row >= 0 && row < model.getRowCount()) {
-            return new Object[]{
-                model.getValueAt(row, 0),
-                model.getValueAt(row, 1),
-                model.getValueAt(row, 2),
-                model.getValueAt(row, 3),
-                model.getValueAt(row, 4),
-                model.getValueAt(row, 5),
-                model.getValueAt(row, 6),
-                model.getValueAt(row, 7),
-                model.getValueAt(row, 8)
-            };
+    
+    //---------------------------------------------------------------
+    //CODIGO PARA MOSTRAR LOS DAOTS DE LA FILA A LOS CAMPOS DEL PANEL
+    //---------------------------------------------------------------
+    private void loadSelectedRowData(int row) {
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    // Obtener el ID del producto de la fila seleccionada
+    int idProducto = (int) model.getValueAt(row, 0);
+    
+    // Consulta SQL para obtener los datos del producto por ID
+    String sql = "SELECT * FROM productos WHERE Id_Producto = ?";
+
+    try (Connection conet = con1.conectar();
+         PreparedStatement pst = conet.prepareStatement(sql)) {
+
+        // Establecer el parámetro de la consulta
+        pst.setInt(1, idProducto);
+
+        // Ejecutar la consulta y obtener el resultado
+        try (ResultSet rs = pst.executeQuery()) {
+            if (rs.next()) {
+                // Obtener los datos del ResultSet y asignarlos a los campos
+                txtNombreProducto.setText(rs.getString("NombreProducto"));
+                txtCategoria.setText(rs.getString("Categoría"));
+                txtPrecio.setText(rs.getString("Precio"));
+                txtStock.setText(rs.getString("Stock"));
+                txtStockMin.setText(rs.getString("Stock_Min"));
+                txtStockMax.setText(rs.getString("Stock_Max"));
+                txtUnidadMedida.setText(rs.getString("UnidadMedida"));
+                txtDescripcion.setText(rs.getString("DescripciónProducto"));
+
+                // Habilitar campos para edición si es necesario
+                enableTextFields();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontraron datos para el producto seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
-        return null;
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error al cargar los datos del producto: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        System.out.println("Error al cargar los datos del producto: " + e.getMessage());
     }
+}
+
+    
+    
+ 
     private void enableTextFields() {
         txtNombreProducto.setEnabled(true);
         txtCategoria.setEnabled(true);
@@ -143,48 +152,42 @@ public class Product_Form extends Form {
         txtStockMin.setEnabled(true);
         txtUnidadMedida.setEnabled(true);
     }
-//    private void agregarFilaATabla(String nombreProducto, String categoria, double precio, String stock, String unidadMedida, String stockMin, String stockMax, String descripcion) {
-//        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-//        model.addRow(new Object[]{model.getRowCount() + 1, nombreProducto, categoria, precio, Integer.parseInt(stock), unidadMedida, Integer.parseInt(stockMin), Integer.parseInt(stockMax), descripcion});
-//    }
-
+    
     //---------------------------------------------------
     //METODO PARA TRAER LA BASE DE DATOS A NUESTRO JPANEL
     //---------------------------------------------------
     void mostrarTabla(){
-        // Limpiar el modelo de la tabla antes de cargar nuevos datos
-    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-    modelo.setRowCount(0); // Esto elimina todas las filas de la tabla
+    
+       String[] titulos = {"Id_Producto", "NombreProducto", "Stock", "Stock_Min", "Stock_Max", "Precio", "Categoría", "UnidadMedida", "DescripciónProducto"};
+    modelo = new DefaultTableModel(null, titulos);
+    jTable1.setModel(modelo);
 
-    // Consulta SQL para obtener datos de la base de datos
-    String sql = "SELECT Id_Producto, NombreProducto, Stock, Stock_Min, Stock_Max, Precio, Categoría, UnidadMedida, DescripciónProducto FROM productos";
+    String sql = "SELECT * FROM productos";
 
-    try (Connection conet = con1.conectar(); 
-         Statement st = conet.createStatement(); 
+    try (Connection conet = con1.conectar();
+         Statement st = conet.createStatement();
          ResultSet rs = st.executeQuery(sql)) {
 
-        // Recorrer el ResultSet y agregar filas al modelo de la tabla
         while (rs.next()) {
-            // Obtener los datos de cada fila en el mismo orden que las columnas del modelo
-            Object[] fila = {
-                rs.getInt("Id_Producto"),
-                rs.getString("NombreProducto"),
-                rs.getInt("Stock"),
-                rs.getInt("Stock_Min"),
-                rs.getInt("Stock_Max"),
-                rs.getDouble("Precio"),
-                rs.getString("Categoría"),
-                rs.getString("UnidadMedida"),
-                rs.getString("DescripciónProducto")
-            };
-
-            // Agregar la fila al modelo de la tabla
+            Object[] fila = new Object[9];
+            fila[0] = rs.getInt("Id_Producto");
+            fila[1] = rs.getString("NombreProducto");
+            fila[2] = rs.getInt("Stock");
+            fila[3] = rs.getInt("Stock_Min");
+            fila[4] = rs.getInt("Stock_Max");
+            fila[5] = rs.getDouble("Precio");
+            fila[6] = rs.getString("Categoría");
+            fila[7] = rs.getString("UnidadMedida");
+            fila[8] = rs.getString("DescripciónProducto");
             modelo.addRow(fila);
         }
+
     } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error SQL: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "Error al mostrar los datos: " + e.getMessage());
+        System.out.println("Error al mostrar los datos: " + e.getMessage());
     }
-    }
+}
+
     
     //---------------------------------------------------
     //METODO PARA AGREGAR A LA BASE DE DATOS
@@ -303,8 +306,87 @@ public class Product_Form extends Form {
         }
     }
     }
-    
 
+    //---------------------------------------------------
+    //METODO PARA ACTUALIZAR LA FILA DE LA TABLA
+    //---------------------------------------------------
+    void modificar(){
+    int fila = jTable1.getSelectedRow();
+    if (fila < 0) {
+        JOptionPane.showMessageDialog(null, "Seleccione un producto para modificar.");
+        return;
+    }
+
+    // Obtener el ID del producto de la fila seleccionada
+    int idProducto = (int) jTable1.getValueAt(fila, 0);
+
+    // Obtener texto de los campos y limpiar espacios en blanco
+    String nom = txtNombreProducto.getText().trim();
+    String cate = txtCategoria.getText().trim();
+    String prec = txtPrecio.getText().trim();
+    String stock = txtStock.getText().trim();
+    String stockmin = txtStockMin.getText().trim();
+    String stockmax = txtStockMax.getText().trim();
+    String medida = txtUnidadMedida.getText().trim();
+    String descrip = txtDescripcion.getText().trim();
+
+    // Validar que todos los campos están completos
+    if (nom.isEmpty() || cate.isEmpty() || prec.isEmpty() || stock.isEmpty() ||
+        stockmin.isEmpty() || stockmax.isEmpty() || medida.isEmpty() || descrip.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Todos los campos deben estar completos.");
+        return; // Salir del método si hay campos vacíos
+    }
+
+    // Validar y convertir los campos numéricos
+    int stockInt = 0, stockMinInt = 0, stockMaxInt = 0;
+    double precioDouble = 0.0;
+
+    try {
+        stockInt = Integer.parseInt(stock);
+        stockMinInt = Integer.parseInt(stockmin);
+        stockMaxInt = Integer.parseInt(stockmax);
+        precioDouble = Double.parseDouble(prec);
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Error en el formato de número: " + e.getMessage());
+        System.out.println("Error en el formato de número: " + e.getMessage());
+        return; // Salir del método si hay un error de formato
+    }
+
+    // Construir la consulta SQL
+    String sql = "UPDATE productos SET NombreProducto=?, Stock=?, Stock_Min=?, Stock_Max=?, Precio=?, Categoría=?, UnidadMedida=?, DescripciónProducto=? WHERE Id_Producto=?";
+
+    try (Connection conet = con1.conectar();
+         PreparedStatement pst = conet.prepareStatement(sql)) {
+
+        // Establecer los parámetros de la consulta
+        pst.setString(1, nom);
+        pst.setInt(2, stockInt);
+        pst.setInt(3, stockMinInt);
+        pst.setInt(4, stockMaxInt);
+        pst.setDouble(5, precioDouble);
+        pst.setString(6, cate);
+        pst.setString(7, medida);
+        pst.setString(8, descrip);
+        pst.setInt(9, idProducto);
+
+        // Ejecutar la consulta
+        int filasAfectadas = pst.executeUpdate();
+
+        if (filasAfectadas > 0) {
+            JOptionPane.showMessageDialog(null, "Producto modificado correctamente.");
+            limpiarCampos();
+            mostrarTabla(); // Actualizar la tabla para reflejar los cambios
+        } else {
+            JOptionPane.showMessageDialog(null, "No se pudo modificar el producto.");
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error SQL: " + e.getMessage());
+        System.out.println("Error SQL: " + e.getMessage());
+    }
+    }
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -475,34 +557,31 @@ public class Product_Form extends Form {
 
             },
             new String [] {
-                "ID", "NombreProducto", "Stock", "Stock_Min", "Stock_Max", "Precio", "Categoría", "Unidad_Medida", "Descripción"
+                "NombreProducto", "Categoría", "Precio", "Stock", "Unidad_Medida", "Stock_Min", "Stock_Max", "Descripción"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
         });
         jTable1.setRowHeight(25);
         jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(40);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(90);
-            jTable1.getColumnModel().getColumn(3).setPreferredWidth(40);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(90);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(30);
             jTable1.getColumnModel().getColumn(4).setPreferredWidth(30);
+            jTable1.getColumnModel().getColumn(5).setPreferredWidth(40);
             jTable1.getColumnModel().getColumn(6).setPreferredWidth(30);
-            jTable1.getColumnModel().getColumn(7).setPreferredWidth(30);
         }
 
         btnNuevo.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
@@ -563,36 +642,36 @@ public class Product_Form extends Form {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblUnidadMedida)
                                 .addGap(5, 5, 5)
-                                .addComponent(txtUnidadMedida, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                .addComponent(txtUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(10, 10, 10)
                                 .addComponent(lblStockMin)
                                 .addGap(6, 6, 6)
-                                .addComponent(txtStockMin, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                .addComponent(txtStockMin, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(8, 8, 8)
                                 .addComponent(lblStockMax)
                                 .addGap(11, 11, 11)
-                                .addComponent(txtStockMax, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                                .addGap(10, 10, 10)
-                                .addComponent(lblDescripción)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                .addComponent(txtStockMax, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblDescripción))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblNombreProducto)
                                 .addGap(9, 9, 9)
-                                .addComponent(txtNombreProducto)
+                                .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(10, 10, 10)
                                 .addComponent(lblCategoria)
                                 .addGap(9, 9, 9)
-                                .addComponent(txtCategoria)
+                                .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(48, 48, 48)
                                 .addComponent(lblPrecio)
                                 .addGap(7, 7, 7)
-                                .addComponent(txtPrecio)
+                                .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(60, 60, 60)
                                 .addComponent(lblStock, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(13, 13, 13)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtStock, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
-                            .addComponent(txtDescripcion))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(6, 6, 6))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtSearchBar)
@@ -620,25 +699,25 @@ public class Product_Form extends Form {
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblNombreProducto)
-                    .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNombreProducto)
                     .addComponent(lblCategoria)
-                    .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCategoria)
                     .addComponent(lblPrecio)
-                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPrecio)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblStock)
-                        .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtStock)))
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblUnidadMedida)
-                    .addComponent(txtUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUnidadMedida)
                     .addComponent(lblStockMin)
-                    .addComponent(txtStockMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtStockMin)
                     .addComponent(lblStockMax)
-                    .addComponent(txtStockMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtStockMax)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblDescripción)
-                        .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtDescripcion)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
@@ -662,23 +741,13 @@ public class Product_Form extends Form {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-//        if (selectedRow != -1) {
-//            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-//            model.removeRow(selectedRow);
-//            clearTextFields();
-//            disableTextFields();
-//            selectedRow = -1;
-//        } else {
-//            JOptionPane.showMessageDialog(this, "No hay fila seleccionada para eliminar", "Error", JOptionPane.ERROR_MESSAGE);
-//        }
         eliminar(); 
         mostrarTabla();
+        limpiarCampos();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void txtCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCategoriaActionPerformed
-        // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_txtCategoriaActionPerformed
 
     private void txtNombreProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreProductoActionPerformed
@@ -686,29 +755,11 @@ public class Product_Form extends Form {
     }//GEN-LAST:event_txtNombreProductoActionPerformed
 
     private void txtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioActionPerformed
-        // TODO add your handling code here:
-        try {
-    double precio = Double.parseDouble(txtPrecio.getText());
-    // Aquí puedes usar 'precio' según tus necesidades
-} catch (NumberFormatException e) {
-    JOptionPane.showMessageDialog(this, "Por favor, ingresa un precio válido.", "Error", JOptionPane.ERROR_MESSAGE);
-    return;
-}
+
     }//GEN-LAST:event_txtPrecioActionPerformed
 
     private void txtStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStockActionPerformed
-        // TODO add your handling code here:
-        try {
-    int stock = Integer.parseInt(txtStock.getText());
-    if (stock < 0) {
-        JOptionPane.showMessageDialog(this, "El stock debe ser un número entero positivo.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-    // Aquí puedes usar 'stock' según tus necesidades
-} catch (NumberFormatException e) {
-    JOptionPane.showMessageDialog(this, "Por favor, ingresa un valor numérico válido para el stock.", "Error", JOptionPane.ERROR_MESSAGE);
-    return;
-}
+
     }//GEN-LAST:event_txtStockActionPerformed
 
     private void txtUnidadMedidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUnidadMedidaActionPerformed
@@ -750,61 +801,25 @@ public class Product_Form extends Form {
     }//GEN-LAST:event_txtDescripcionActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        // TODO add your handling code here:
-        // Obtener los datos de los campos de texto
-//    String nombreProducto = txtNombreProducto.getText();
-//    String categoria = txtCategoria.getText();
-//    String precio = txtPrecio.getText();
-//    String stock = txtStock.getText();
-//    String unidadMedida = txtUnidadMedida.getText();
-//    String stockMin = txtStockMin.getText();
-//    String stockMax = txtStockMax.getText();
-//    String descripcion = txtDescripcion.getText();
-
-    // Verificar si todos los campos están llenos
-//    if (nombreProducto.isEmpty() || categoria.isEmpty() || precio.isEmpty() || 
-//        stock.isEmpty() || unidadMedida.isEmpty() || stockMin.isEmpty() || 
-//        stockMax.isEmpty() || descripcion.isEmpty()) {
-//        // Mostrar un mensaje de error si hay campos vacíos
-//        JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
-//        return;
-//    }
-
-    // Obtener el modelo de la tabla
-//    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    //SIRVE PARA QUE DESPUES DE AGREGAR LOS CAMPOS SE BLOQUEEN
     
-    // Insertar los datos en la primera posición de la tabla
-//    model.insertRow(0, new Object[]{model.getRowCount() + 1, nombreProducto, categoria, 
-//                                    Double.parseDouble(precio), Integer.parseInt(stock), 
-//                                    unidadMedida, Integer.parseInt(stockMin), 
-//                                    Integer.parseInt(stockMax), descripcion});
-
-    // Bloquear los campos de texto nuevamente
-//    txtNombreProducto.setEnabled(false);
-//    txtCategoria.setEnabled(false);
-//    txtStock.setEnabled(false);
-//    txtPrecio.setEnabled(false);
-//    txtDescripcion.setEnabled(false);
-//    txtStockMax.setEnabled(false);
-//    txtStockMin.setEnabled(false);
-//    txtUnidadMedida.setEnabled(false);
-//
-//     Limpiar los campos de texto
-//    txtNombreProducto.setText("");
-//    txtCategoria.setText("");
-//    txtStock.setText("");
-//    txtPrecio.setText("");
-//    txtDescripcion.setText("");
-//    txtStockMax.setText("");
-//    txtStockMin.setText("");
-//    txtUnidadMedida.setText("");
-    //Verificar si el precio es numérico
+    txtNombreProducto.setEnabled(false);
+    txtCategoria.setEnabled(false);
+    txtStock.setEnabled(false);
+    txtPrecio.setEnabled(false);
+    txtDescripcion.setEnabled(false);
+    txtStockMax.setEnabled(false);
+    txtStockMin.setEnabled(false);
+    txtUnidadMedida.setEnabled(false);
+    
         agregarFila();
         mostrarTabla();
+        limpiarCampos();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
+        //CODIGO PARA HABILITAR LOS CAMPOS DESPUÉS DE DARLE CLICK AL BOTON NUEVO
         txtNombreProducto.setEnabled(true);
         txtCategoria.setEnabled(true);
         txtStock.setEnabled(true);
@@ -826,54 +841,18 @@ public class Product_Form extends Form {
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
-        
-       
-        
-        
-        if (selectedRow != -1) {
-            // Obtener los datos de los campos de texto
-            String nombreProducto = txtNombreProducto.getText();
-            String categoria = txtCategoria.getText();
-            String precio = txtPrecio.getText();
-            String stock = txtStock.getText();
-            String unidadMedida = txtUnidadMedida.getText();
-            String stockMin = txtStockMin.getText();
-            String stockMax = txtStockMax.getText();
-            String descripcion = txtDescripcion.getText();
+        txtNombreProducto.setEnabled(false);
+    txtCategoria.setEnabled(false);
+    txtStock.setEnabled(false);
+    txtPrecio.setEnabled(false);
+    txtDescripcion.setEnabled(false);
+    txtStockMax.setEnabled(false);
+    txtStockMin.setEnabled(false);
+    txtUnidadMedida.setEnabled(false);
 
-            // Verificar si todos los campos están llenos
-            if (nombreProducto.isEmpty() || categoria.isEmpty() || precio.isEmpty() || 
-                stock.isEmpty() || unidadMedida.isEmpty() || stockMin.isEmpty() || 
-                stockMax.isEmpty() || descripcion.isEmpty()) {
-                // Mostrar un mensaje de error si hay campos vacíos
-                JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // Actualizar la fila seleccionada en la tabla
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.setValueAt(nombreProducto, selectedRow, 1);
-            model.setValueAt(categoria, selectedRow, 2);
-            model.setValueAt(Double.parseDouble(precio), selectedRow, 3);
-            model.setValueAt(Integer.parseInt(stock), selectedRow, 4);
-            model.setValueAt(unidadMedida, selectedRow, 5);
-            model.setValueAt(Integer.parseInt(stockMin), selectedRow, 6);
-            model.setValueAt(Integer.parseInt(stockMax), selectedRow, 7);
-            model.setValueAt(descripcion, selectedRow, 8);
-
-            // Limpiar los campos de texto
-            clearTextFields();
-
-            // Deshabilitar los campos de texto
-            disableTextFields();
-
-            // Resetear la fila seleccionada
-            selectedRow = -1;
-        } else {
-            JOptionPane.showMessageDialog(this, "No hay fila seleccionada para actualizar", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        
+        modificar();
+        limpiarCampos();
+        mostrarTabla();
         
         
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -960,6 +939,10 @@ public class Product_Form extends Form {
 //            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
 //        }
     }//GEN-LAST:event_txtStockMaxKeyTyped
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
