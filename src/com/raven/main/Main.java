@@ -32,7 +32,7 @@ public class Main extends javax.swing.JFrame {
             @Override
             public void selectedMenu(int index) {
                 if (index == 0) {
-                    if(Permissions.getInstance().accessPanel("ini1cio")){
+                    if(Permissions.getInstance().accessPanel("Inicio")){
                         mainBody.displayForm(new Home_Form());
                        
                     } 
@@ -54,7 +54,7 @@ public class Main extends javax.swing.JFrame {
                         mainBody.displayForm(new Product_Form());
                     }
                 }  else if (index == 5) {
-                    if(Permissions.getInstance().accessPanel("Configuracion")){
+                    if(Permissions.getInstance().accessPanel("Configuración")){
                         mainBody.displayForm(settingForm, "Configuracion");
                     }
                 } 
