@@ -30,22 +30,18 @@ public class Sale_Form2 extends Form {
 
     private Connection cn = ConnectionDB.conectar();
     private int idCliente = 0;
-    String total;
-    String code;
-    String action;
-    String saleNumber, documentType;
+
     private int idProducto = 0;
     private String nombreProducto = "";
     private int cantidadProductoBBDD = 0;
     private double precioUnitario = 0.0;
 
-    int records;
+    
     String ids[] = new String[50];
     int num = 0;
 
-    static int counter;
     public String employeeId, employeeName;
-    int saleId, newSaleId;
+    int saleId;
 
     public String productCode;
     static Connection conn = null;
@@ -54,13 +50,9 @@ public class Sale_Form2 extends Form {
     DefaultTableModel dtm = new DefaultTableModel();
     DefaultTableModel dtmDetail = new DefaultTableModel();
 
-    String criterion, search;
 
     public Sale_Form2() {
         initComponents();
-//        txtDates.setDisabledTextColor(Color.blue);
-//        txtDates.setText(date());
-//        txtDates.setVisible(true);//falta esta variable
         this.CargarComboClientes();
         this.CargarComboProductos();
         this.updateVentaID();
@@ -84,73 +76,19 @@ public class Sale_Form2 extends Form {
         txtTotalProduct.setEnabled(false);
         txtTotalProduct.setDisabledTextColor(Color.black);
 
-        //numVenta = generarNumFactura();
-//        txtNumFactura.setText(numVenta);
-//        
-//        saleNumber = generaNumVenta();
-//        txtNumSale.setText(saleNumber);
-//
-//        numVenta = generaIdVenta();
-//        txtUltimoId.setText(numVenta);
-//        
-//        this.setSize(860, 723);
-//
         look();
 //        txtIdEmpleado.setVisible(false);
         btnNew.requestFocus();
         btnDelete.setEnabled(false);
         btnClean.setEnabled(false);
-//        
-//        jpnImporte.setVisible(false);
-//        
-//        txtUltimoId.setVisible(false);
-//        txtCategoria.setVisible(false);
+
 //        
         String title[] = {"ID", "NOMBRE", "TIPO", "CANTIDAD", "PRECIO", "TOTAL"};
         dtmDetail.setColumnIdentifiers(title);
         jtbProductDetail.setModel(dtmDetail);
 //        CreatejtbProductDetail();
     }
-//    public String generaNumVenta() {
-//
-//        Sales oVenta = new Sales();
-//        try {
-//
-//            rs = oVenta.obtenerUltimoIdVenta();
-//            while (rs.next()) {
-//                if (rs.getString(1) != null) {
-//                    Scanner s = new Scanner(rs.getString(1));
-//                    int c = s.useDelimiter("C").nextInt() + 1;
-//
-//                    if (c < 10) {
-//                        return "C0000" + c;
-//                    }
-//                    if (c < 100) {
-//                        return "C000" + c;
-//                    }
-//                    if (c < 1000) {
-//                        return "C00" + c;
-//                    }
-//                    if (c < 10000) {
-//                        return "C0" + c;
-//                    } else {
-//                        return "C" + c;
-//                    }
-//                }
-//            }
-//
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        } finally {
-//            try {
-//                rs.close();
-//            } catch (SQLException ex) {
-//                ex.printStackTrace();
-//            }
-//        }
-//        return "C00001";
-//
-//    }
+
 
     private void cleanText() {
 
@@ -186,14 +124,10 @@ public class Sale_Form2 extends Form {
         btnDelete.setEnabled(false);
         btnClean.setEnabled(false);//limpiar tabla
 
-//
-//        txtTotalVenta.setText("0.0");
-//        txtDescuento.setText("0.0");
+
         txtSubTotal.setText("0.0");
         txtIGV.setText("0.0");
         txtTotalPay.setText("0.0");
-//        txtCodigoProducto.setText("");
-//        txtCodigoProducto.setText("");
         cmbProductName.setSelectedIndex(0);
         txtStock.setText("");
         txtPriceProduct.setText("");
@@ -203,12 +137,7 @@ public class Sale_Form2 extends Form {
         txtDNI.setText("");
         txtChange.setText("");
         txtCash.setText("");
-//        txtDireccion.setText("");
-//        txtRuc.setText("");
-//        txtIdCliente.setText("");
-//        txtComprobante.setText("");
-//        txtCategoria.setText("");
-//        txtDescripcionProducto.setText("");
+
         btnNew.requestFocus();
     }
 
@@ -914,12 +843,6 @@ public class Sale_Form2 extends Form {
                 .addGap(10, 10, 10))
         );
     }// </editor-fold>//GEN-END:initComponents
-//    public static String currentDate() {
-//        Date fecha = new Date();
-//        SimpleDateFormat formatofecha = new SimpleDateFormat("dd-MM-yyy");
-//        return formatofecha.format(fecha);
-//
-//    }
 
     public static String date() {
         Date fecha = new Date();
