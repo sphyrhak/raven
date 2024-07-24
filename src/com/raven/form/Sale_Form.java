@@ -2,15 +2,30 @@
 package com.raven.form;
 
 import com.raven.component.Form;
+import com.raven.connection.ConnectionDB;
 import com.raven.event.EventColorChange;
 import com.raven.theme.ThemeColorChange;
 import java.awt.Color;
+import javax.swing.table.DefaultTableModel;
+import com.raven.component.Form;
+import com.raven.connection.ConnectionDB;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.RowFilter;
+import javax.swing.table.TableRowSorter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.SQLException;
+import javax.swing.JTable;
 
 public class Sale_Form extends Form {
-
+//private JTable jTable1;
+    private DefaultTableModel modelo;
     public Sale_Form() {
         initComponents();
-        
+        mostrarTabla();
         if (ThemeColorChange.getInstance().getMode() == ThemeColorChange.Mode.LIGHT) {
             lbTitleSale.setForeground(new Color(80, 80, 80));
             lbTexDNI.setForeground(new Color(80, 80, 80));
@@ -24,6 +39,40 @@ public class Sale_Form extends Form {
         lbTexDNI.setForeground(color);       
     }
 
+ private void mostrarTabla() {
+       // Definir el modelo de la tabla
+    String[] titulos = {"Id_Ventas", "NombreApellido", "Teléfono", "Documento", "Fecha", "Subtotal", "IGV", "Total"};
+    DefaultTableModel modelo = new DefaultTableModel(null, titulos);
+    jTable1.setModel(modelo);
+
+    String sql = "SELECT v.Id_Ventas, c.NombreApellido, c.Teléfono, c.Documento, " +
+                 "v.Fecha, v.Subtotal, v.IGV, v.Total " +
+                 "FROM ventas v " +
+                 "INNER JOIN cliente c ON v.Id_Cliente = c.Id_Cliente";
+
+    try (Connection cn = ConnectionDB.conectar(); // Asegúrate de que tu método de conexión esté funcionando
+         Statement st = cn.createStatement();
+         ResultSet rs = st.executeQuery(sql)) {
+
+        while (rs.next()) {
+            Object[] fila = new Object[8];
+            fila[0] = rs.getInt("Id_Ventas");
+            fila[1] = rs.getString("NombreApellido");
+            fila[2] = rs.getString("Teléfono");
+            fila[3] = rs.getString("Documento");
+            fila[4] = rs.getString("Fecha");
+            fila[5] = rs.getDouble("Subtotal");
+            fila[6] = rs.getDouble("IGV");
+            fila[7] = rs.getDouble("Total");
+            modelo.addRow(fila);
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al mostrar los datos: " + e.getMessage());
+        System.out.println("Error al mostrar los datos: " + e.getMessage());
+    }
+    
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -56,7 +105,7 @@ public class Sale_Form extends Form {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lbTitleSale)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -76,7 +125,7 @@ public class Sale_Form extends Form {
                 java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -87,6 +136,7 @@ public class Sale_Form extends Form {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setMaxWidth(45);
