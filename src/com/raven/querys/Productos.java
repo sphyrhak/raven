@@ -43,6 +43,12 @@ public class Productos {
         }
         return respuesta;
     }
+    //ESTA UNA DEMOSTRACION DEL GIT BASH CON EL GIT HUB
+    
+    
+    
+    
+    
     
 //-----------------------------------------------------------------
     //METODO PARA MOSTRAR LA TABLA DE BD AL JPANEL
