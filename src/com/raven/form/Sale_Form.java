@@ -2,28 +2,82 @@
 package com.raven.form;
 
 import com.raven.component.Form;
+import com.raven.connection.ConnectionDB;
 import com.raven.event.EventColorChange;
 import com.raven.theme.ThemeColorChange;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class Sale_Form extends Form {
+    DefaultTableModel modelo;
 
     public Sale_Form() {
         initComponents();
+        mostrarTabla();
         
-        if (ThemeColorChange.getInstance().getMode() == ThemeColorChange.Mode.LIGHT) {
-            lbTitleSale.setForeground(new Color(80, 80, 80));
-            lbTexDNI.setForeground(new Color(80, 80, 80));
+        //metodo para la barra de busqueda
+    
+    }
+    private void filtrarProductos(String textoBusqueda) {
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+    jTable1.setRowSorter(sorter);
+
+    if (textoBusqueda.isEmpty()) {
+        // Si el campo de búsqueda está vacío, muestra todas las filas
+        sorter.setRowFilter(null);
+    } else {
+        // Aplica un filtro que ignore mayúsculas y minúsculas y busque coincidencias parciales en cualquier columna
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + textoBusqueda));
+    }
+}
+    
+
+//---------------------------------------------------
+    //METODO PARA TRAER LA BASE DE DATOS A NUESTRO JPANEL
+    //---------------------------------------------------
+    void mostrarTabla(){
+    
+       String[] titulos = {"Id_Ventas", "NombreApellido","Teléfono", "Documento", "Fecha", "Subtotal", "IGV", "Total"};
+    modelo = new DefaultTableModel(null, titulos);
+    jTable1.setModel(modelo);
+
+    String sql = "SELECT ventas.Id_Ventas, ventas.Fecha, ventas.Subtotal, ventas.IGV, ventas.Total, " +
+             "cliente.NombreApellido, cliente.Teléfono, cliente.Documento " +
+             "FROM ventas " +
+             "JOIN cliente ON ventas.Id_Cliente = cliente.Id_Cliente";
+
+    try (Connection cn = ConnectionDB.conectar();
+         Statement st = cn.createStatement();
+         ResultSet rs = st.executeQuery(sql)) {
+
+        while (rs.next()) {
+            Object[] fila = new Object[9];
+            fila[0] = rs.getInt("Id_Ventas");
+            fila[1] = rs.getString("NombreApellido");
+            fila[2] = rs.getInt("Teléfono");
+            fila[3] = rs.getInt("Documento");
+            fila[4] = rs.getString("Fecha");
+            fila[5] = rs.getDouble("Subtotal");
+            fila[6] = rs.getDouble("IGV");
+            fila[7] = rs.getDouble("Total");
+            modelo.addRow(fila);
         }
-        
-    }
 
-    @Override
-    public void changeColor(Color color) {
-        lbTitleSale.setForeground(color);
-        lbTexDNI.setForeground(color);       
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al mostrar los datos: " + e.getMessage());
+        System.out.println("Error al mostrar los datos: " + e.getMessage());
     }
-
+    //metodo para la barra de busqueda
+    
+}
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -63,20 +117,20 @@ public class Sale_Form extends Form {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "NOMBRE", "DNI", "TIPO", "FECHA", "DESCRIPCION", "SUBTOTAL", "IGV", "TOTAL"
+                "ID", "NOMBRE", "DNI", "TELEFONO", "FECHA", "SUBTOTAL", "IGV", "TOTAL"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, false, false, false
+                true, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -90,7 +144,7 @@ public class Sale_Form extends Form {
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setMaxWidth(45);
-            jTable1.getColumnModel().getColumn(7).setMaxWidth(60);
+            jTable1.getColumnModel().getColumn(6).setMaxWidth(60);
         }
 
         txtSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -136,6 +190,12 @@ public class Sale_Form extends Form {
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
+          // TODO add your handling code here:
+        // Obtén el texto ingresado en el campo de búsqueda
+    String textoBusqueda = txtSearch.getText().trim();
+
+    // Filtra la tabla de productos según el texto de búsqueda
+    filtrarProductos(textoBusqueda);
         
     }//GEN-LAST:event_txtSearchActionPerformed
 
