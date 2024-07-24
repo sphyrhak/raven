@@ -3,15 +3,10 @@ package com.raven.form;
 
 import com.raven.component.Form;
 import com.raven.connection.ConnectionDB;
-import java.awt.BorderLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
-import com.raven.querys.Productos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -94,10 +89,19 @@ jTable1.getSelectionModel().addListSelectionListener(e -> {
         txtStockMin.setEnabled(false);
         txtUnidadMedida.setEnabled(false);
     }
-    
+        private void enableTextFields() {
+        txtNombreProducto.setEnabled(true);
+        txtCategoria.setEnabled(true);
+        txtStock.setEnabled(true);
+        txtPrecio.setEnabled(true);
+        txtDescripcion.setEnabled(true);
+        txtStockMax.setEnabled(true);
+        txtStockMin.setEnabled(true);
+        txtUnidadMedida.setEnabled(true);
+    }
     
     //---------------------------------------------------------------
-    //CODIGO PARA MOSTRAR LOS DAOTS DE LA FILA A LOS CAMPOS DEL PANEL
+    //CODIGO PARA MOSTRAR LOS DATOS DE LA FILA A LOS CAMPOS DEL PANEL
     //---------------------------------------------------------------
     private void loadSelectedRowData(int row) {
     DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -139,20 +143,7 @@ jTable1.getSelectionModel().addListSelectionListener(e -> {
     }
 }
 
-    
-    
- 
-    private void enableTextFields() {
-        txtNombreProducto.setEnabled(true);
-        txtCategoria.setEnabled(true);
-        txtStock.setEnabled(true);
-        txtPrecio.setEnabled(true);
-        txtDescripcion.setEnabled(true);
-        txtStockMax.setEnabled(true);
-        txtStockMin.setEnabled(true);
-        txtUnidadMedida.setEnabled(true);
-    }
-    
+
     //---------------------------------------------------
     //METODO PARA TRAER LA BASE DE DATOS A NUESTRO JPANEL
     //---------------------------------------------------
@@ -642,36 +633,36 @@ jTable1.getSelectionModel().addListSelectionListener(e -> {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblUnidadMedida)
                                 .addGap(5, 5, 5)
-                                .addComponent(txtUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtUnidadMedida, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
                                 .addGap(10, 10, 10)
                                 .addComponent(lblStockMin)
                                 .addGap(6, 6, 6)
-                                .addComponent(txtStockMin, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtStockMin, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
                                 .addGap(8, 8, 8)
                                 .addComponent(lblStockMax)
                                 .addGap(11, 11, 11)
-                                .addComponent(txtStockMax, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtStockMax, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblDescripción))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblNombreProducto)
                                 .addGap(9, 9, 9)
-                                .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtNombreProducto, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
                                 .addGap(10, 10, 10)
                                 .addComponent(lblCategoria)
                                 .addGap(9, 9, 9)
-                                .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtCategoria, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
                                 .addGap(48, 48, 48)
                                 .addComponent(lblPrecio)
                                 .addGap(7, 7, 7)
-                                .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
                                 .addGap(60, 60, 60)
                                 .addComponent(lblStock, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(3, 3, 3)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtStock, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+                            .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))
                         .addGap(6, 6, 6))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtSearchBar)
@@ -699,25 +690,25 @@ jTable1.getSelectionModel().addListSelectionListener(e -> {
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblNombreProducto)
-                    .addComponent(txtNombreProducto)
+                    .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblCategoria)
-                    .addComponent(txtCategoria)
+                    .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPrecio)
-                    .addComponent(txtPrecio)
+                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblStock)
-                        .addComponent(txtStock)))
+                        .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblUnidadMedida)
-                    .addComponent(txtUnidadMedida)
+                    .addComponent(txtUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblStockMin)
-                    .addComponent(txtStockMin)
+                    .addComponent(txtStockMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblStockMax)
-                    .addComponent(txtStockMax)
+                    .addComponent(txtStockMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblDescripción)
-                        .addComponent(txtDescripcion)))
+                        .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
@@ -868,82 +859,99 @@ jTable1.getSelectionModel().addListSelectionListener(e -> {
         
     }//GEN-LAST:event_txtSearchBarActionPerformed
 
+    
+//------------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------------    
+//ESTOS SOLO ES PARA VALIDAR SI LOS DATOS INGRESADOS SON DE ACUERDO A LOS CAMPOS, POR EJEMPLO EN EL CAMPO QUE ES PARA INT ESCRIBE UN STRING LE SALE ERROR
+//SE VAN A USAR EVENTOS EN ESTE CASO EL EVENTO "KEYTYPED"
+    
+    
     private void txtNombreProductoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreProductoKeyTyped
         // TODO add your handling code here:
-//        char c = evt.getKeyChar();//Llamamos el evento
-//        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
-//            evt.consume(); //evitar que se capture el digito
-//            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-//        }
+        char c = evt.getKeyChar();//Llamamos el evento
+        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
+            evt.consume(); //evitar que se capture el digito
+            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_txtNombreProductoKeyTyped
 
     private void txtCategoriaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCategoriaKeyTyped
         // TODO add your handling code here:
-//        char c = evt.getKeyChar();//Llamamos el evento
-//        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
-//            evt.consume(); //evitar que se capture el digito
-//            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-//        }
+        char c = evt.getKeyChar();//Llamamos el evento
+        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
+            evt.consume(); //evitar que se capture el digito
+            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_txtCategoriaKeyTyped
 
     private void txtUnidadMedidaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUnidadMedidaKeyTyped
         // TODO add your handling code here:
-//        char c = evt.getKeyChar();//Llamamos el evento
-//        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
-//            evt.consume(); //evitar que se capture el digito
-//            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-//        }
+        // Llamamos el evento
+    char c = evt.getKeyChar(); 
+    
+    // Verificamos si el carácter ingresado es un dígito
+    if (Character.isDigit(c)) { 
+        evt.consume(); // Evitar que se capture el dígito
+        JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+    }
+    
+    // Verificamos la longitud actual del texto
+    if (txtUnidadMedida.getText().length() >= 3) {
+        evt.consume(); // Evitar que se capture el carácter adicional
+        JOptionPane.showMessageDialog(this, "Se permite un máximo de 3 caracteres", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+    }
     }//GEN-LAST:event_txtUnidadMedidaKeyTyped
 
     private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
         // TODO add your handling code here:
-//        char c = evt.getKeyChar();//Llamamos el evento
-//        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
-//            evt.consume(); //evitar que se capture el digito
-//            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-//        }
+        char c = evt.getKeyChar();//Llamamos el evento
+        if (Character.isDigit(c)) { //Comparamos si ingresamos un digito
+            evt.consume(); //evitar que se capture el digito
+            JOptionPane.showMessageDialog(this, "Solo se permite letras en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_txtDescripcionKeyTyped
 
     private void txtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyTyped
         // TODO add your handling code here:
-//        char c = evt.getKeyChar();//Llamamos el evento
-//        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
-//            evt.consume(); //evitar que se capture el digito
-//            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-//        }
+        char c = evt.getKeyChar();//Llamamos el evento
+        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
+            evt.consume(); //evitar que se capture el digito
+            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_txtPrecioKeyTyped
 
     private void txtStockKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtStockKeyTyped
         // TODO add your handling code here:
-//        char c = evt.getKeyChar();//Llamamos el evento
-//        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
-//            evt.consume(); //evitar que se capture el digito
-//            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-//        }
+        char c = evt.getKeyChar();//Llamamos el evento
+        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
+            evt.consume(); //evitar que se capture el digito
+            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_txtStockKeyTyped
 
     private void txtStockMinKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtStockMinKeyTyped
 //        // TODO add your handling code here:
-//        char c = evt.getKeyChar();//Llamamos el evento
-//        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
-//            evt.consume(); //evitar que se capture el digito
-//            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-//        }
+        char c = evt.getKeyChar();//Llamamos el evento
+        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
+            evt.consume(); //evitar que se capture el digito
+            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_txtStockMinKeyTyped
 
     private void txtStockMaxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtStockMaxKeyTyped
         // TODO add your handling code here:
-//        char c = evt.getKeyChar();//Llamamos el evento
-//        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
-//            evt.consume(); //evitar que se capture el digito
-//            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-//        }
+        char c = evt.getKeyChar();//Llamamos el evento
+        if (Character.isLetter(c)) { //Comparamos si ingresamos un digito
+            evt.consume(); //evitar que se capture el digito
+            JOptionPane.showMessageDialog(this, "Solo se permite números en este campo", "ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_txtStockMaxKeyTyped
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseClicked
-
+//------------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------------
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

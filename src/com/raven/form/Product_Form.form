@@ -25,39 +25,39 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="lblUnidadMedida" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                              <Component id="txtUnidadMedida" min="-2" pref="100" max="-2" attributes="0"/>
+                              <Component id="txtUnidadMedida" pref="100" max="32767" attributes="0"/>
                               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                               <Component id="lblStockMin" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                              <Component id="txtStockMin" min="-2" pref="100" max="-2" attributes="0"/>
+                              <Component id="txtStockMin" pref="100" max="32767" attributes="0"/>
                               <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                               <Component id="lblStockMax" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                              <Component id="txtStockMax" min="-2" pref="100" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="txtStockMax" pref="100" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Component id="lblDescripción" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="lblNombreProducto" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                              <Component id="txtNombreProducto" min="-2" pref="100" max="-2" attributes="0"/>
+                              <Component id="txtNombreProducto" pref="100" max="32767" attributes="0"/>
                               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                               <Component id="lblCategoria" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                              <Component id="txtCategoria" min="-2" pref="100" max="-2" attributes="0"/>
+                              <Component id="txtCategoria" pref="100" max="32767" attributes="0"/>
                               <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
                               <Component id="lblPrecio" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                              <Component id="txtPrecio" min="-2" pref="100" max="-2" attributes="0"/>
+                              <Component id="txtPrecio" pref="100" max="32767" attributes="0"/>
                               <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
                               <Component id="lblStock" min="-2" pref="60" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="txtStock" min="-2" pref="116" max="-2" attributes="0"/>
-                          <Component id="txtDescripcion" min="-2" pref="116" max="-2" attributes="0"/>
+                          <Component id="txtStock" pref="116" max="32767" attributes="0"/>
+                          <Component id="txtDescripcion" pref="116" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   </Group>
@@ -94,27 +94,27 @@
               <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="lblNombreProducto" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtNombreProducto" max="32767" attributes="0"/>
+                  <Component id="txtNombreProducto" min="-2" max="-2" attributes="0"/>
                   <Component id="lblCategoria" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtCategoria" max="32767" attributes="0"/>
+                  <Component id="txtCategoria" min="-2" max="-2" attributes="0"/>
                   <Component id="lblPrecio" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtPrecio" max="32767" attributes="0"/>
+                  <Component id="txtPrecio" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblStock" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtStock" alignment="3" max="32767" attributes="0"/>
+                      <Component id="txtStock" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="lblUnidadMedida" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtUnidadMedida" max="32767" attributes="0"/>
+                  <Component id="txtUnidadMedida" min="-2" max="-2" attributes="0"/>
                   <Component id="lblStockMin" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtStockMin" max="32767" attributes="0"/>
+                  <Component id="txtStockMin" min="-2" max="-2" attributes="0"/>
                   <Component id="lblStockMax" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtStockMax" max="32767" attributes="0"/>
+                  <Component id="txtStockMax" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblDescripción" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtDescripcion" alignment="3" max="32767" attributes="0"/>
+                      <Component id="txtDescripcion" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
