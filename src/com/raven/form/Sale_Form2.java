@@ -27,6 +27,7 @@ import javax.swing.table.TableCellRenderer;
 public class Sale_Form2 extends Form {
 
     public String status = "EMITIDO";
+    String action;
 
     private Connection cn = ConnectionDB.conectar();
     private int idCliente = 0;
