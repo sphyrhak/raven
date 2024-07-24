@@ -40,6 +40,8 @@
           <Color blue="22" green="22" red="22" type="rgb"/>
         </Property>
       </Properties>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
       <SubComponents>
         <Component class="com.raven.component.Header" name="header">
         </Component>
