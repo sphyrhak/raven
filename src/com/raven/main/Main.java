@@ -98,7 +98,7 @@ public class Main extends javax.swing.JFrame {
         settingForm.setSelectedThemeColor(pro.getColor());
         settingForm.setDarkMode(pro.isDarkMode());
         settingForm.initBackgroundImage(pro.getBackgroundImage());
-        //mainBody.displayForm(new Home_Form());
+        //mainBody.displayForm(new Home_Form());    
         //método agrega un ActionListener al botón btn_Logout
        btn_Logout.addActionListener(e -> {
             int response = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas cerrar sesión?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
