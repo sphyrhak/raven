@@ -80,7 +80,7 @@ public class Client_Form extends Form {
             modelo.addRow(new Object[]{
                 rs.getInt("Id_Cliente"),
                 rs.getString("NombreApellido"),
-                rs.getString("DNI"),
+                rs.getString("Documento"),
                 rs.getString("Teléfono"),
                 rs.getString("Correo"),
                 rs.getString("Plan"),
